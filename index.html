@@ -1,174 +1,155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sooraj Dino Game</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sooraj Flappy Game</title>
 
-  <style>
-    /* Animated gradient background */
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-      background: linear-gradient(45deg, orange, red, green, yellow);
-      background-size: 400% 400%;
-      animation: gradientLoop 20s ease infinite;
-    }
+<style>
+  body {
+    margin: 0;
+    overflow: hidden;
+    background: #6ec6d1;
+    font-family: Arial, Helvetica, sans-serif;
+  }
 
-    @keyframes gradientLoop {
-      0% { background-position: 0% 50%; }
-      50% { background-position: 100% 50%; }
-      100% { background-position: 0% 50%; }
-    }
+  canvas {
+    display: block;
+    margin: 0 auto;
+    background: #6ec6d1;
+  }
 
-    .border-box {
-      margin: 0.1cm;
-      border: 2px solid black;
-      padding: 20px;
-      text-align: center;
-      background: rgba(255,255,255,0.1);
-      border-radius: 10px;
-    }
+  .tap {
+    position: absolute;
+    bottom: 140px;
+    left: 50%;
+    transform: translateX(-50%);
+    color: red;
+    font-weight: bold;
+    font-size: 22px;
+    background: white;
+    padding: 6px 14px;
+    border-radius: 6px;
+  }
 
-    .intro {
-      background: rgba(255, 255, 255, 0.18);
-      backdrop-filter: blur(6px);
-      padding: 20px;
-      border-radius: 14px;
-      color: white;
-      max-width: 400px;
-      margin-bottom: 20px;
-      transition: transform 0.4s ease;
-    }
+  .ready {
+    position: absolute;
+    top: 120px;
+    width: 100%;
+    text-align: center;
+    font-size: 42px;
+    font-weight: bold;
+    color: #f7b733;
+    text-shadow: 3px 3px #000;
+  }
 
-    button {
-      background: #ffffff;
-      color: #333;
-      border: none;
-      padding: 10px 20px;
-      font-size: 15px;
-      border-radius: 25px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-    }
-
-    button:hover { transform: scale(1.05); }
-
-    canvas {
-      border: 2px solid black;
-      background: white;
-      display: block;
-      margin: 0 auto;
-    }
-
-    #infoImage img {
-      max-width: 80%;
-      border-radius: 10px;
-      margin-top: 20px;
-    }
-
-  </style>
+  .scoreBox {
+    position: absolute;
+    top: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: white;
+    border: 3px solid black;
+    padding: 5px 18px;
+    font-size: 24px;
+    font-weight: bold;
+  }
+</style>
 </head>
 
 <body>
-  <div class="border-box">
 
-    <!-- Intro + Site Info Button -->
-    <div class="intro" id="infoBox">
-      <h1>Welcome 👋</h1>
-      <p>You are now visiting <strong>Sooraj’s Official Website</strong></p>
-      <button onclick="showSiteInfo()">Site Info</button>
-    </div>
+<div class="ready" id="readyText">Get Ready</div>
+<div class="tap" id="tapText">TAP</div>
+<div class="scoreBox" id="scoreBox">0</div>
 
-    <!-- Image that appears when Site Info is clicked -->
-    <div id="infoImage" style="display:none; text-align:center;">
-      <a href="https://ibb.co/JWCJm8v1" target="_blank">
-        <img src="https://i.ibb.co/RG7wYt3F/Screenshot-20260120-230417-Chrome.png" 
-             alt="Site Info">
-      </a>
-    </div>
+<canvas id="game" width="360" height="640"></canvas>
 
-    <!-- Dino Game -->
-    <canvas id="game" width="600" height="150"></canvas>
-  </div>
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
 
-  <script>
-    // --- Show Site Info Image ---
-    function showSiteInfo() {
-      document.getElementById("infoBox").style.display = "none";
-      document.getElementById("infoImage").style.display = "block";
-    }
+let gameStarted = false;
+let score = 0;
 
-    // --- Load Images for Dino Game ---
-    const dinoImg = new Image();
-    dinoImg.src = 'https://i.imgur.com/8b8Qv5Y.png'; // Replace with your Dino image
+const bird = {
+  x: 80,
+  y: 300,
+  r: 14,
+  vy: 0
+};
 
-    const cactusImg = new Image();
-    cactusImg.src = 'https://i.imgur.com/h0Z3u5G.png'; // Replace with your Cactus image
+const gravity = 0.5;
+const jump = -8;
 
-    // --- Dino Game ---
-    const canvas = document.getElementById('game');
-    const ctx = canvas.getContext('2d');
+// draw bird
+function drawBird() {
+  ctx.fillStyle = "yellow";
+  ctx.beginPath();
+  ctx.arc(bird.x, bird.y, bird.r, 0, Math.PI * 2);
+  ctx.fill();
+}
 
-    let dinoY = 120, dinoVY = 0, gravity = 0.6;
-    let isJumping = false;
-    let cactusX = 600;
+// update
+function update() {
+  if (gameStarted) {
+    bird.vy += gravity;
+    bird.y += bird.vy;
 
-    function reset() {
-      dinoY = 120; 
-      dinoVY = 0;
-      cactusX = 600;
-    }
+    if (bird.y > canvas.height - bird.r) reset();
+    if (bird.y < bird.r) bird.y = bird.r;
+  }
+}
 
-    function draw() {
-      ctx.clearRect(0,0,canvas.width,canvas.height);
-      // Draw Dino
-      ctx.drawImage(dinoImg, 50, dinoY, 30, 30);
-      // Draw Cactus
-      ctx.drawImage(cactusImg, cactusX, 130, 15, 20);
-    }
+// draw
+function draw() {
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  drawBird();
+}
 
-    function update() {
-      if (isJumping) {
-        dinoVY += gravity;
-        dinoY += dinoVY;
-        if (dinoY >= 120) { dinoY = 120; dinoVY=0; isJumping=false; }
-      }
+// reset
+function reset() {
+  bird.y = 300;
+  bird.vy = 0;
+  score = 0;
+  gameStarted = false;
+  document.getElementById("readyText").style.display = "block";
+  document.getElementById("tapText").style.display = "block";
+  document.getElementById("scoreBox").innerText = score;
 
-      cactusX -= 5;
-      if (cactusX < -20) cactusX = canvas.width;
+  const msg = new SpeechSynthesisUtterance("കളി അവസാനിച്ചു");
+  msg.lang = "ml-IN";
+  speechSynthesis.cancel();
+  speechSynthesis.speak(msg);
+}
 
-      // Collision → Malayalam voice
-      if(cactusX < 80 && cactusX > 50 && dinoY + 30 > 130) {
-        reset();
-        const msg = new SpeechSynthesisUtterance();
-        msg.text = "ഓവർ, കളി അവസാനിച്ചു"; // Malayalam Game Over
-        msg.lang = "ml-IN";
-        window.speechSynthesis.speak(msg);
-      }
-    }
+// tap / click / space
+function flap() {
+  if (!gameStarted) {
+    gameStarted = true;
+    document.getElementById("readyText").style.display = "none";
+    document.getElementById("tapText").style.display = "none";
+  }
+  bird.vy = jump;
+  score++;
+  document.getElementById("scoreBox").innerText = score;
+}
 
-    document.addEventListener('keydown', e => {
-      if(e.code === "Space" && !isJumping) {
-        dinoVY = -12;
-        isJumping = true;
-      }
-    });
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") flap();
+});
 
-    function loop() { update(); draw(); requestAnimationFrame(loop); }
-    loop();
+canvas.addEventListener("mousedown", flap);
+canvas.addEventListener("touchstart", flap);
 
-    // Intro voice in Malayalam
-    window.onload = () => {
-      const msg = new SpeechSynthesisUtterance();
-      msg.text = "ഓപ് കേരള ഗെയിമർ"; // Malayalam intro
-      msg.lang = "ml-IN";
-      window.speechSynthesis.speak(msg);
-    }
-  </script>
+// loop
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+loop();
+</script>
+
 </body>
 </html>
