@@ -1,107 +1,152 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sooraj Dino Game</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sooraj Flappy Bird Site</title>
 
-    <!-- Google AdSense -->
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1824710596042778"
+<!-- Google AdSense -->
+<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1824710596042778"
      crossorigin="anonymous"></script>
 
-    <style>
-        body {
-            margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            background: linear-gradient(270deg, #ff9a9e, #fad0c4, #a1c4fd, #c2e9fb);
-            background-size: 800% 800%;
-            animation: gradient 15s ease infinite;
-        }
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
+    background: linear-gradient(to bottom, #70c5ce, #f7f7f7);
+  }
 
-        @keyframes gradient {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
+  nav {
+    display: flex;
+    justify-content: center;
+    background: #333;
+  }
+  nav button {
+    background: none;
+    border: none;
+    color: white;
+    padding: 14px 20px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  nav button:hover {
+    background: #555;
+  }
 
-        canvas {
-            border: 2px solid #333;
-            background: #fff;
-        }
-    </style>
+  section {
+    display: none;
+    padding: 20px;
+    text-align: center;
+  }
+  section.active {
+    display: block;
+  }
+
+  canvas {
+    background: #70c5ce;
+    display: block;
+    margin: 20px auto;
+  }
+
+  #score {
+    font-size: 24px;
+    color: #000;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+</style>
 </head>
 <body>
-    <canvas id="gameCanvas" width="600" height="150"></canvas>
 
-    <script>
-        // Dino Game JS
-        const canvas = document.getElementById('gameCanvas');
-        const ctx = canvas.getContext('2d');
+<nav>
+  <button onclick="showSection('game')">Game</button>
+  <button onclick="showSection('privacy')">Privacy Policy</button>
+  <button onclick="showSection('contact')">Contact</button>
+</nav>
 
-        let dino = { x: 50, y: 120, width: 20, height: 20, dy: 0, jump: -6 };
-        let gravity = 0.3;
-        let obstacles = [];
-        let gameOver = false;
-        let score = 0;
+<!-- Game Section -->
+<section id="game" class="active">
+  <canvas id="gameCanvas" width="400" height="600"></canvas>
+  <div id="score">0</div>
+</section>
 
-        document.addEventListener('keydown', (e) => {
-            if(e.code === 'Space' && dino.y === 120) {
-                dino.dy = dino.jump;
-            }
-        });
+<!-- Privacy Section -->
+<section id="privacy">
+  <h1>Privacy Policy</h1>
+  <p>This website collects no personal information from users. Ads displayed on this site may collect anonymous data in accordance with Google AdSense policies.</p>
+  <p>We respect your privacy and do not share any data with third parties.</p>
+</section>
 
-        function spawnObstacle() {
-            const height = 20;
-            const width = 20;
-            obstacles.push({ x: canvas.width, y: 130, width, height });
-        }
+<!-- Contact Section -->
+<section id="contact">
+  <h1>Contact Us</h1>
+  <p>You can contact us at: <strong>tkhamsa985@gmail.com</strong></p>
+</section>
 
-        function update() {
-            if(gameOver) return;
-            ctx.clearRect(0,0,canvas.width,canvas.height);
+<script>
+  function showSection(id) {
+    document.querySelectorAll('section').forEach(sec => sec.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+  }
 
-            // Dino physics
-            dino.dy += gravity;
-            dino.y += dino.dy;
-            if(dino.y > 120) { dino.y = 120; dino.dy = 0; }
+  // Flappy Bird Game Code
+  const canvas = document.getElementById("gameCanvas");
+  const ctx = canvas.getContext("2d");
 
-            ctx.fillStyle = 'green';
-            ctx.fillRect(dino.x, dino.y, dino.width, dino.height);
+  let bird = { x: 50, y: 300, w: 30, h: 30, gravity: 0.6, velocity: 0, jump: -10 };
+  let pipes = [];
+  let pipeWidth = 50;
+  let pipeGap = 150;
+  let score = 0;
+  let gameOver = false;
 
-            // Obstacles
-            for(let i=0;i<obstacles.length;i++){
-                obstacles[i].x -= 4;
-                ctx.fillStyle = 'red';
-                ctx.fillRect(obstacles[i].x, obstacles[i].y, obstacles[i].width, obstacles[i].height);
+  function createPipe() {
+    let topHeight = Math.random() * (canvas.height - pipeGap - 100) + 50;
+    pipes.push({ x: canvas.width, top: topHeight, bottom: topHeight + pipeGap });
+  }
 
-                // Collision
-                if(dino.x < obstacles[i].x + obstacles[i].width &&
-                   dino.x + dino.width > obstacles[i].x &&
-                   dino.y < obstacles[i].y + obstacles[i].height &&
-                   dino.height + dino.y > obstacles[i].y) {
-                    gameOver = true;
-                }
+  function draw() {
+    ctx.clearRect(0,0,canvas.width,canvas.height);
 
-                if(obstacles[i].x + obstacles[i].width < 0) {
-                    obstacles.splice(i,1);
-                    score++;
-                    i--;
-                }
-            }
+    // Bird
+    ctx.fillStyle = "yellow";
+    ctx.fillRect(bird.x, bird.y, bird.w, bird.h);
 
-            ctx.fillStyle = 'black';
-            ctx.font = '16px Arial';
-            ctx.fillText('Score: '+score, 500, 20);
+    // Pipes
+    ctx.fillStyle = "green";
+    for(let i=0;i<pipes.length;i++){
+      let p = pipes[i];
+      ctx.fillRect(p.x, 0, pipeWidth, p.top);
+      ctx.fillRect(p.x, p.bottom, pipeWidth, canvas.height - p.bottom);
 
-            requestAnimationFrame(update);
-        }
+      if(bird.x < p.x + pipeWidth &&
+         bird.x + bird.w > p.x &&
+         (bird.y < p.top || bird.y + bird.h > p.bottom)) gameOver = true;
 
-        setInterval(spawnObstacle, 2000);
-        update();
-    </script>
+      if(p.x + pipeWidth === bird.x) score++;
+    }
+
+    if(pipes.length && pipes[0].x < -pipeWidth) pipes.shift();
+
+    // Bird physics
+    bird.velocity += bird.gravity;
+    bird.y += bird.velocity;
+
+    if(bird.y + bird.h > canvas.height || bird.y < 0) gameOver = true;
+
+    document.getElementById("score").innerText = score;
+
+    if(!gameOver) requestAnimationFrame(draw);
+    else alert("Game Over! Score: " + score);
+  }
+
+  setInterval(createPipe, 1500);
+
+  window.addEventListener("keydown", e => { if(e.code==="Space") bird.velocity = bird.jump; });
+  window.addEventListener("click", () => { bird.velocity = bird.jump; });
+
+  draw();
+</script>
+
 </body>
-</html>
+    </html>
