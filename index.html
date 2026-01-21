@@ -6,62 +6,61 @@
 <title>Sooraj Flappy Game</title>
 
 <style>
-  body {
-    margin: 0;
-    background: #6ec6d1;
-    overflow: hidden;
-    font-family: Arial, Helvetica, sans-serif;
-  }
+body {
+  margin: 0;
+  background: #70c5ce;
+  overflow: hidden;
+  font-family: Arial, sans-serif;
+}
 
-  canvas {
-    display: block;
-    margin: auto;
-    background: #6ec6d1;
-  }
+canvas {
+  display: block;
+  margin: auto;
+}
 
-  .ready {
-    position: absolute;
-    top: 120px;
-    width: 100%;
-    text-align: center;
-    font-size: 42px;
-    font-weight: bold;
-    color: #f7b733;
-    text-shadow: 3px 3px #000;
-  }
+#ready {
+  position: absolute;
+  top: 140px;
+  width: 100%;
+  text-align: center;
+  font-size: 42px;
+  font-weight: bold;
+  color: #f7b733;
+  text-shadow: 3px 3px #000;
+}
 
-  .tap {
-    position: absolute;
-    bottom: 160px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    color: red;
-    font-weight: bold;
-    padding: 6px 14px;
-    border-radius: 6px;
-  }
+#tap {
+  position: absolute;
+  bottom: 160px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  color: red;
+  font-weight: bold;
+  padding: 6px 16px;
+  border-radius: 6px;
+}
 
-  .score {
-    position: absolute;
-    top: 20px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: white;
-    border: 3px solid black;
-    padding: 4px 14px;
-    font-size: 24px;
-    font-weight: bold;
-    display: none;
-  }
+#score {
+  position: absolute;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: white;
+  border: 3px solid black;
+  padding: 4px 14px;
+  font-size: 24px;
+  font-weight: bold;
+  display: none;
+}
 </style>
 </head>
 
 <body>
 
-<div class="ready" id="ready">Get Ready</div>
-<div class="tap" id="tap">TAP</div>
-<div class="score" id="score">0</div>
+<div id="ready">Get Ready</div>
+<div id="tap">TAP</div>
+<div id="score">0</div>
 
 <canvas id="game" width="360" height="640"></canvas>
 
@@ -69,43 +68,44 @@
 const canvas = document.getElementById("game");
 const ctx = canvas.getContext("2d");
 
-let started = false;
+let gameStarted = false;
 let score = 0;
 
 const bird = {
   x: 80,
   y: 300,
   r: 12,
-  vy: 0
+  velocity: 0
 };
 
-const gravity = 0.45;
+const gravity = 0.5;
 const jump = -8;
-
+const pipeWidth = 52;
+const gap = 150;
 let pipes = [];
 
-function createPipe() {
-  let gap = 140;
-  let topHeight = Math.random() * 200 + 50;
-  pipes.push({
-    x: canvas.width,
-    top: topHeight,
-    bottom: canvas.height - (topHeight + gap),
-    passed: false
-  });
+function startGame() {
+  if (!gameStarted) {
+    gameStarted = true;
+    document.getElementById("ready").style.display = "none";
+    document.getElementById("tap").style.display = "none";
+    document.getElementById("score").style.display = "block";
+    pipes = [];
+    score = 0;
+    document.getElementById("score").innerText = score;
+  }
+  bird.velocity = jump;
 }
 
-function reset() {
+function resetGame() {
   bird.y = 300;
-  bird.vy = 0;
+  bird.velocity = 0;
   pipes = [];
-  score = 0;
-  started = false;
+  gameStarted = false;
 
   document.getElementById("ready").style.display = "block";
   document.getElementById("tap").style.display = "block";
   document.getElementById("score").style.display = "none";
-  document.getElementById("score").innerText = score;
 
   const msg = new SpeechSynthesisUtterance("കളി അവസാനിച്ചു");
   msg.lang = "ml-IN";
@@ -113,52 +113,55 @@ function reset() {
   speechSynthesis.speak(msg);
 }
 
-function flap() {
-  if (!started) {
-    started = true;
-    document.getElementById("ready").style.display = "none";
-    document.getElementById("tap").style.display = "none";
-    document.getElementById("score").style.display = "block";
-  }
-  bird.vy = jump;
+function addPipe() {
+  const topHeight = Math.random() * 250 + 50;
+  pipes.push({
+    x: canvas.width,
+    top: topHeight,
+    passed: false
+  });
 }
 
 function update() {
-  if (!started) return;
+  if (!gameStarted) return;
 
-  bird.vy += gravity;
-  bird.y += bird.vy;
+  bird.velocity += gravity;
+  bird.y += bird.velocity;
 
-  if (bird.y < bird.r || bird.y > canvas.height - bird.r) reset();
-
-  if (pipes.length === 0 || pipes[pipes.length - 1].x < 180) {
-    createPipe();
+  if (bird.y < bird.r || bird.y > canvas.height - bird.r) {
+    resetGame();
   }
 
-  pipes.forEach(p => {
-    p.x -= 2.5;
+  if (pipes.length === 0 || pipes[pipes.length - 1].x < 180) {
+    addPipe();
+  }
 
-    if (!p.passed && p.x + 50 < bird.x) {
-      p.passed = true;
+  pipes.forEach(pipe => {
+    pipe.x -= 2.5;
+
+    // score
+    if (!pipe.passed && pipe.x + pipeWidth < bird.x) {
+      pipe.passed = true;
       score++;
       document.getElementById("score").innerText = score;
     }
 
     // collision
     if (
-      bird.x + bird.r > p.x &&
-      bird.x - bird.r < p.x + 50 &&
-      (bird.y - bird.r < p.top || bird.y + bird.r > canvas.height - p.bottom)
+      bird.x + bird.r > pipe.x &&
+      bird.x - bird.r < pipe.x + pipeWidth &&
+      (bird.y - bird.r < pipe.top ||
+       bird.y + bird.r > pipe.top + gap)
     ) {
-      reset();
+      resetGame();
     }
   });
 
-  pipes = pipes.filter(p => p.x > -60);
+  pipes = pipes.filter(p => p.x > -pipeWidth);
 }
 
 function draw() {
-  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 
   // bird
   ctx.fillStyle = "yellow";
@@ -167,7 +170,26 @@ function draw() {
   ctx.fill();
 
   // pipes
-  ctx.fillStyle = "#6abf40";
-  pipes.forEach(p => {
-    ctx.fillRect(p.x, 0, 50, p.top);
-    ctx.fillRect(p.x, canvas.height -
+  ctx.fillStyle = "#5fb136";
+  pipes.forEach(pipe => {
+    ctx.fillRect(pipe.x, 0, pipeWidth, pipe.top);
+    ctx.fillRect(pipe.x, pipe.top + gap, pipeWidth, canvas.height);
+  });
+}
+
+function loop() {
+  update();
+  draw();
+  requestAnimationFrame(loop);
+}
+loop();
+
+document.addEventListener("keydown", e => {
+  if (e.code === "Space") startGame();
+});
+canvas.addEventListener("mousedown", startGame);
+canvas.addEventListener("touchstart", startGame);
+</script>
+
+</body>
+</html>
