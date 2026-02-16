@@ -1,188 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Apps & Tools 2026</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Random Live Chat</title>
 
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-8NLXCN5PYH"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-8NLXCN5PYH');
-    </script>
+<style>
+body{
+  margin:0;
+  background:#0b0b0b;
+  color:#fff;
+  font-family: Arial, sans-serif;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  height:100vh;
+}
 
-    <meta name="description" content="Discover the best free apps and tools for students, creators, and tech enthusiasts. Guides, reviews, and recommendations for 2026.">
+#app{
+  width:100%;
+  max-width:420px;
+  height:90vh;
+  background:#121212;
+  border-radius:12px;
+  display:flex;
+  flex-direction:column;
+  overflow:hidden;
+}
 
-    <style>
-        body { font-family: Arial, sans-serif; margin:0; padding:0; background:#f8f8f8; color:#333; }
-        header { background:#2c3e50; color:#fff; padding:20px 10px; text-align:center; }
-        nav { background:#34495e; display:flex; justify-content:center; flex-wrap:wrap; }
-        nav a { color:#fff; text-decoration:none; padding:15px 20px; display:block; }
-        nav a:hover { background:#1abc9c; }
-        .container { max-width:1000px; margin:20px auto; padding:0 15px; }
-        h1, h2 { color:#2c3e50; }
-        article { background:#fff; padding:15px; margin-bottom:20px; border-radius:5px; box-shadow:0 2px 5px rgba(0,0,0,0.1); }
-        footer { text-align:center; padding:15px; background:#2c3e50; color:#fff; margin-top:20px; }
-        ul { list-style: disc; margin-left:20px; }
-        @media(max-width:600px){ nav { flex-direction:column; } }
-    </style>
+header{
+  padding:15px;
+  text-align:center;
+  background:#1a1a1a;
+  font-weight:bold;
+}
+
+#chat{
+  flex:1;
+  padding:10px;
+  overflow-y:auto;
+  font-size:14px;
+}
+
+.msg{
+  margin:6px 0;
+  padding:8px 10px;
+  background:#1f1f1f;
+  border-radius:6px;
+  width:fit-content;
+  max-width:80%;
+}
+
+.me{
+  background:#00b894;
+  color:#000;
+  margin-left:auto;
+}
+
+footer{
+  padding:8px;
+  background:#1a1a1a;
+}
+
+.controls{
+  display:flex;
+  gap:6px;
+}
+
+input{
+  flex:1;
+  padding:10px;
+  border:none;
+  border-radius:6px;
+  outline:none;
+}
+
+button{
+  padding:10px 14px;
+  border:none;
+  border-radius:6px;
+  cursor:pointer;
+  background:#00b894;
+  font-weight:bold;
+}
+button.skip{
+  background:#ff7675;
+}
+#start{
+  height:100%;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+#start button{
+  font-size:18px;
+  padding:14px 30px;
+}
+</style>
 </head>
+
 <body>
 
-<header>
-    <h1>Apps & Tools 2026</h1>
-    <p>Your guide to the best apps and tools for students & creators</p>
-</header>
+<div id="app">
 
-<nav>
-    <a href="#home">Home</a>
-    <a href="#blog">Blog</a>
-    <a href="#about">About Us</a>
-    <a href="#contact">Contact</a>
-    <a href="#privacy">Privacy Policy</a>
-</nav>
+<header>Random Live Chat</header>
 
-<div class="container" id="home">
-    <article>
-        <h2>Welcome to Apps & Tools 2026</h2>
-        <p>Discover the best free apps and tools for students, creators, and tech enthusiasts. We provide detailed guides, reviews, and recommendations so you can choose the right app for your needs.</p>
-    </article>
-
-    <div id="blog">
-
-        <!-- Article 1 -->
-        <article>
-            <h2>Best AI Apps for Students in 2026</h2>
-            <ul>
-                <li><strong>ChatGPT:</strong> AI chatbot for answering questions and generating study notes.</li>
-                <li><strong>Quizlet AI:</strong> AI-powered flashcards for exam prep.</li>
-                <li><strong>Notion AI:</strong> AI assistant inside Notion for notes and planning.</li>
-            </ul>
-        </article>
-
-        <!-- Article 2 -->
-        <article>
-            <h2>Top Free Video Editing Apps for Android (2026)</h2>
-            <ul>
-                <li><strong>CapCut:</strong> Easy templates, intuitive, lots of effects.</li>
-                <li><strong>VN Video Editor:</strong> Professional editing, no watermark.</li>
-                <li><strong>InShot:</strong> Quick edits for social media, simple to use.</li>
-            </ul>
-        </article>
-
-        <!-- Article 3 -->
-        <article>
-            <h2>Best Photo Editing Apps for Low-End Phones</h2>
-            <ul>
-                <li><strong>Snapseed:</strong> Lightweight, professional filters, free.</li>
-                <li><strong>Pixlr:</strong> Fast, minimal lag, easy effects.</li>
-                <li><strong>PhotoDirector:</strong> AI tools for creative edits.</li>
-            </ul>
-        </article>
-
-        <!-- Article 4 -->
-        <article>
-            <h2>AI Apps That Convert Text to Video</h2>
-            <ul>
-                <li><strong>Lumen5:</strong> AI video creation from text.</li>
-                <li><strong>Pictory AI:</strong> Converts scripts into short videos.</li>
-                <li><strong>InVideo:</strong> AI-assisted video creation.</li>
-            </ul>
-        </article>
-
-        <!-- Article 5 -->
-        <article>
-            <h2>Best AI Writing Tools 2026</h2>
-            <ul>
-                <li><strong>Jasper AI:</strong> Fast content creation, paid plan required.</li>
-                <li><strong>Writesonic:</strong> Templates for blogs & ads.</li>
-                <li><strong>Copy.ai:</strong> Simple AI content generation.</li>
-            </ul>
-        </article>
-
-        <!-- Article 6 -->
-        <article>
-            <h2>Top Free Productivity Apps 2026</h2>
-            <ul>
-                <li><strong>Notion:</strong> Notes and project management.</li>
-                <li><strong>Microsoft To-Do:</strong> Task management, simple.</li>
-                <li><strong>Google Keep:</strong> Quick notes and reminders.</li>
-            </ul>
-        </article>
-
-        <!-- Article 7 -->
-        <article>
-            <h2>Free AI Image Generators 2026</h2>
-            <ul>
-                <li><strong>DALL·E 3:</strong> Generate images from text.</li>
-                <li><strong>Craiyon:</strong> Free AI image generator.</li>
-                <li><strong>Stable Diffusion:</strong> Open-source AI image creation.</li>
-            </ul>
-        </article>
-
-        <!-- Article 8 -->
-        <article>
-            <h2>Best Free Music Apps 2026</h2>
-            <ul>
-                <li><strong>Spotify Free:</strong> Music streaming with ads.</li>
-                <li><strong>SoundCloud:</strong> Discover independent music.</li>
-                <li><strong>Jamendo:</strong> Free legal music for personal use.</li>
-            </ul>
-        </article>
-
-        <!-- Article 9 -->
-        <article>
-            <h2>Top Free Cloud Storage Apps</h2>
-            <ul>
-                <li><strong>Google Drive:</strong> 15GB free cloud storage.</li>
-                <li><strong>Dropbox Basic:</strong> 2GB free, easy sharing.</li>
-                <li><strong>OneDrive:</strong> 5GB free, Microsoft integration.</li>
-            </ul>
-        </article>
-
-        <!-- Article 10 -->
-        <article>
-            <h2>Best Free PDF Tools 2026</h2>
-            <ul>
-                <li><strong>Smallpdf:</strong> Edit, merge, compress PDFs.</li>
-                <li><strong>ILovePDF:</strong> Easy online PDF tools.</li>
-                <li><strong>PDFescape:</strong> Free online PDF editor.</li>
-            </ul>
-        </article>
-
-    </div>
+<div id="start">
+  <button onclick="startChat()">Start Chat</button>
 </div>
 
-<div id="about">
-    <article>
-        <h2>About Us</h2>
-        <p>This website shares information and reviews about useful apps and tools for students, creators, and tech enthusiasts. All content is written for educational purposes.</p>
-    </article>
-</div>
+<div id="chat" style="display:none;"></div>
 
-<div id="contact">
-    <article>
-        <h2>Contact Us</h2>
-        <ul>
-            <li>Phone: <strong>9567569690</strong></li>
-            <li>Email: <a href="mailto:tkhamsa985@gmail.com">tkhamsa985@gmail.com</a></li>
-        </ul>
-    </article>
-</div>
-
-<div id="privacy">
-    <article>
-        <h2>Privacy Policy</h2>
-        <p>This website uses Google AdSense to display advertisements. Google may use cookies to show ads based on your visits. We do not collect personal information directly from users.</p>
-    </article>
-</div>
-
-<footer>
-    <p>© 2026 Apps & Tools. All rights reserved.</p>
+<footer style="display:none;">
+  <div class="controls">
+    <input id="msg" placeholder="Type a message..." />
+    <button onclick="send()">Send</button>
+    <button class="skip" onclick="skip()">Skip</button>
+  </div>
 </footer>
 
+</div>
+
+<script type="module" src="app.js"></script>
+
+<script>
+function startChat(){
+  document.getElementById("start").style.display="none";
+  document.getElementById("chat").style.display="block";
+  document.querySelector("footer").style.display="block";
+}
+</script>
+
 </body>
-    </html>
+</html>
