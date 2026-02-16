@@ -10,13 +10,12 @@ body{
   margin:0;
   background:#0b0b0b;
   color:#fff;
-  font-family: Arial, sans-serif;
+  font-family:Arial,sans-serif;
   display:flex;
   justify-content:center;
   align-items:center;
   height:100vh;
 }
-
 #app{
   width:100%;
   max-width:420px;
@@ -27,46 +26,39 @@ body{
   flex-direction:column;
   overflow:hidden;
 }
-
 header{
   padding:15px;
   text-align:center;
   background:#1a1a1a;
   font-weight:bold;
 }
-
 #chat{
   flex:1;
   padding:10px;
   overflow-y:auto;
   font-size:14px;
 }
-
 .msg{
   margin:6px 0;
   padding:8px 10px;
   background:#1f1f1f;
   border-radius:6px;
-  width:fit-content;
   max-width:80%;
+  width:fit-content;
 }
-
 .me{
   background:#00b894;
   color:#000;
   margin-left:auto;
 }
-
 footer{
   padding:8px;
   background:#1a1a1a;
 }
-
 .controls{
   display:flex;
   gap:6px;
 }
-
 input{
   flex:1;
   padding:10px;
@@ -74,7 +66,6 @@ input{
   border-radius:6px;
   outline:none;
 }
-
 button{
   padding:10px 14px;
   border:none;
@@ -83,9 +74,7 @@ button{
   background:#00b894;
   font-weight:bold;
 }
-button.skip{
-  background:#ff7675;
-}
+button.skip{background:#ff7675;}
 #start{
   height:100%;
   display:flex;
@@ -102,7 +91,6 @@ button.skip{
 <body>
 
 <div id="app">
-
 <header>Random Live Chat</header>
 
 <div id="start">
@@ -113,22 +101,101 @@ button.skip{
 
 <footer style="display:none;">
   <div class="controls">
-    <input id="msg" placeholder="Type a message..." />
-    <button onclick="send()">Send</button>
-    <button class="skip" onclick="skip()">Skip</button>
+    <input id="msg" placeholder="Type message..." />
+    <button onclick="sendMsg()">Send</button>
+    <button class="skip" onclick="skipChat()">Skip</button>
   </div>
 </footer>
-
 </div>
 
-<script type="module" src="app.js"></script>
+<script type="module">
+/* 🔴 FIREBASE IMPORTS */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import {
+  getFirestore, collection, doc, setDoc, deleteDoc,
+  addDoc, onSnapshot, serverTimestamp, getDocs
+} from "https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore.js";
+import { getAuth, signInAnonymously } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-<script>
-function startChat(){
+/* 🔴 PASTE YOUR FIREBASE CONFIG HERE */
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT_ID"
+};
+
+/* INIT */
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+let uid = null;
+let roomId = null;
+
+const chat = document.getElementById("chat");
+const msg = document.getElementById("msg");
+
+/* AUTH */
+signInAnonymously(auth).then(res=>{
+  uid = res.user.uid;
+});
+
+/* START */
+window.startChat = async ()=>{
   document.getElementById("start").style.display="none";
-  document.getElementById("chat").style.display="block";
+  chat.style.display="block";
   document.querySelector("footer").style.display="block";
+  joinQueue();
+};
+
+/* JOIN QUEUE */
+async function joinQueue(){
+  chat.innerHTML="Connecting to stranger...";
+  await setDoc(doc(db,"queue",uid),{time:serverTimestamp()});
+
+  const q = await getDocs(collection(db,"queue"));
+  if(q.size>=2){
+    const users = q.docs.slice(0,2).map(d=>d.id);
+    roomId = "room_"+Date.now();
+    await setDoc(doc(db,"rooms",roomId),{users});
+    for(let u of users) await deleteDoc(doc(db,"queue",u));
+    listenChat();
+  }
 }
+
+/* LISTEN CHAT */
+function listenChat(){
+  chat.innerHTML="<div class='msg'>Stranger connected</div>";
+  onSnapshot(collection(db,"rooms",roomId,"messages"),snap=>{
+    chat.innerHTML="";
+    snap.forEach(d=>{
+      const div=document.createElement("div");
+      div.className="msg";
+      div.textContent=d.data().text;
+      chat.appendChild(div);
+    });
+    chat.scrollTop=chat.scrollHeight;
+  });
+}
+
+/* SEND */
+window.sendMsg = async ()=>{
+  if(!msg.value||!roomId) return;
+  await addDoc(collection(db,"rooms",roomId,"messages"),{
+    text:msg.value,
+    time:serverTimestamp()
+  });
+  msg.value="";
+};
+
+/* SKIP */
+window.skipChat = async ()=>{
+  if(!roomId) return;
+  await deleteDoc(doc(db,"rooms",roomId));
+  roomId=null;
+  chat.innerHTML="Finding new stranger...";
+  joinQueue();
+};
 </script>
 
 </body>
