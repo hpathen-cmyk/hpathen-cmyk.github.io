@@ -26,16 +26,10 @@ header{
   backdrop-filter:blur(14px);
   border-bottom:1px solid rgba(255,215,0,0.2);
   padding:15px 20px;
-  z-index:1000;
-}
-
-nav{
-  display:flex;
-  justify-content:center;
-  align-items:center;
 }
 
 .logo{
+  text-align:center;
   color:gold;
   font-size:28px;
   font-weight:bold;
@@ -67,7 +61,6 @@ h1{
 p{
   color:#ddd;
   margin-top:10px;
-  line-height:1.6;
 }
 
 .btn{
@@ -104,7 +97,7 @@ section{
 
 .members-grid{
   display:grid;
-  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
+  grid-template-columns:repeat(auto-fit, minmax(220px, 1fr));
   gap:15px;
   max-width:1200px;
   margin:auto;
@@ -133,17 +126,14 @@ section{
   background:#333;
 }
 
-.gallery{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:15px;
-}
-
-.gallery div{
-  height:150px;
-  background:#222;
-  border-radius:20px;
-  border:1px solid rgba(255,215,0,0.2);
+.badge{
+  display:inline-block;
+  padding:5px 10px;
+  margin-top:8px;
+  border-radius:12px;
+  font-size:12px;
+  background:rgba(255,215,0,0.2);
+  color:gold;
 }
 
 footer{
@@ -152,18 +142,13 @@ footer{
   color:#aaa;
 }
 
-html{
-  scroll-behavior:smooth;
-}
 </style>
 </head>
 
 <body>
 
 <header>
-<nav>
 <div class="logo">MRZ Official</div>
-</nav>
 </header>
 
 <section class="hero">
@@ -174,26 +159,19 @@ html{
 </div>
 </section>
 
-<section id="about">
+<section>
 <h2 class="section-title">About MRZ</h2>
 <div class="glass">
 <p>
 MRZ Official is a professional gaming community built for teamwork, skill, and entertainment.
-We bring passionate gamers together to compete as one powerful team.
+We bring passionate gamers together to create a powerful team.
 </p>
 </div>
 </section>
 
-<section id="members">
+<section>
 <h2 class="section-title">Our Members</h2>
 <div class="members-grid" id="membersGrid"></div>
-</section>
-
-<section>
-<h2 class="section-title">Gallery</h2>
-<div class="gallery">
-<div></div><div></div><div></div><div></div>
-</div>
 </section>
 
 <footer>
@@ -201,6 +179,7 @@ We bring passionate gamers together to compete as one powerful team.
 </footer>
 
 <script>
+
 // Button toggle
 const btn = document.querySelector(".btn");
 
@@ -211,23 +190,77 @@ btn.addEventListener("click", () => {
     : "Join Team";
 });
 
-// 35 members auto generator
+// Members data (your full list)
+const members = [
+  "Mrz thoppi (God father)",
+  "Mrz rambo (Leader)",
+  "Mrz sheik (Co Leader)",
+  "Mrz mack (Co Leader)",
+  "Mrz appapan (Member)",
+  "Mrz bilal (Member)",
+  "Mrz Raju bhai (Member)",
+  "Mrz kurup denny (Member)",
+  "Mrz fluffy (Member)",
+  "Mrz ck mari (Member)",
+  "Mrz malik (Member)",
+  "Mrz zendex duvor (Member)",
+  "Mrz Alex duver (Member)",
+  "Mrz falcon (Member)",
+  "Mrz dnl (Member)",
+  "Mrz Amban pro (Member)",
+  "Mrz Charan (Member)",
+  "Mrz the God (Member)",
+  "Mrz Joshua (Member)",
+  "Mrz takai (Member)",
+  "Mrz sakai (Member)",
+  "Mrz speedo (Member)",
+  "Mrz ikkrumon (Member)",
+  "Mrz pranav (Member)",
+  "Mrz pappadam (Member)",
+  "Mrz kidu (Member)",
+  "Mrz Bruce (Member)",
+  "Mrz jasi (Member)",
+  "Mrz JJ (Member)",
+  "Mrz Charlie (Member)",
+  "Mrz kareemeen gwad (Member)",
+  "Mrz chapz (Member)",
+  "Mrz rozario (Member)",
+  "Mrz Alan (Member)",
+  "Mrz bull op (Member)",
+  "Mrz usman (Member)",
+  "Mrz Blake (Member)",
+  "Mrz ismail (Member)",
+  "Mrz minnal (Member)",
+  "Mrz shibu (Member)",
+  "Mrz bobby (Member)",
+  "Mrz rayan (Member)",
+  "Mrz Cooper (Member)"
+];
+
+// render members
 const grid = document.getElementById("membersGrid");
 
-for(let i = 1; i <= 35; i++){
+members.forEach(name => {
+
+  let role = "Member";
+  if(name.includes("God father")) role = "God Father";
+  else if(name.includes("Leader")) role = "Leader";
+  else if(name.includes("Co Leader")) role = "Co Leader";
+
   const card = document.createElement("div");
   card.className = "card";
 
   card.innerHTML = `
     <div class="avatar"></div>
-    <h3>Member ${i}</h3>
+    <h3>${name}</h3>
+    <div class="badge">${role}</div>
     <p>Instagram | Discord</p>
   `;
 
   grid.appendChild(card);
-}
+});
+
 </script>
 
 </body>
 </html>
-
