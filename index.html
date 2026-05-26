@@ -1,139 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Math Solver GPT</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+MRZ Official *{margin:0;padding:0;box-sizing:border-box;font-family:Arial,sans-serif} body{background:linear-gradient(135deg,#0f0f0f,#1a1a1a);color:#fff;overflow-x:hidden} header{position:sticky;top:0;background:rgba(255,215,0,.08);backdrop-filter:blur(14px);padding:15px;border-bottom:1px solid rgba(255,215,0,.2)} nav{display:flex;justify-content:space-between;align-items:center} .logo{font-size:28px;font-weight:bold;color:gold} .hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:20px} .glass{background:rgba(255,255,255,.08);backdrop-filter:blur(14px);border:1px solid rgba(255,215,0,.2);border-radius:25px;padding:25px;box-shadow:0 0 30px rgba(255,215,0,.15)} h1{font-size:3rem;color:gold;animation:fadeIn 1.5s ease} p{color:#ddd;margin-top:10px} .btn{margin-top:20px;padding:12px 25px;background:gold;color:#111;border:none;border-radius:25px;font-weight:bold;cursor:pointer} section{padding:70px 20px} .section-title{text-align:center;color:gold;font-size:2rem;margin-bottom:20px} .slider{display:flex;overflow:auto;gap:15px;padding:10px} .card{min-width:220px;background:rgba(255,255,255,.08);backdrop-filter:blur(12px);border-radius:20px;padding:15px;text-align:center;border:1px solid rgba(255,215,0,.2);transition:.3s} .card:hover{transform:translateY(-8px) scale(1.03)} .avatar{width:90px;height:90px;border-radius:50%;background:#333;margin:0 auto 10px;border:2px solid gold} .gallery{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px} .gallery div{height:150px;background:#222;border-radius:20px;border:1px solid rgba(255,215,0,.2)} footer{text-align:center;padding:30px;color:#aaa} .music-btn{position:fixed;right:20px;bottom:20px;background:gold;color:#111;border:none;padding:15px;border-radius:50%;cursor:pointer} @keyframes fadeIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}} 
 
-<!-- Math.js (safe math parser) -->
-<script src="https://cdn.jsdelivr.net/npm/mathjs@11/lib/browser/math.js"></script>
+MRZ Official
 
-<style>
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
-  display: flex;
-  flex-direction: column;
-  height: 100vh;
-}
+Logo (Add Later)
 
-header {
-  padding: 15px;
-  background: #1e293b;
-  text-align: center;
-  font-size: 18px;
-  font-weight: bold;
-}
+Welcome to MRZ Official 
 
-#chat {
-  flex: 1;
-  overflow-y: auto;
-  padding: 10px;
-}
+Official Gaming Team
 
-.msg {
-  margin: 10px 0;
-  padding: 10px;
-  border-radius: 10px;
-  max-width: 80%;
-}
+Join Button (Add Later) 
 
-.user {
-  background: #2563eb;
-  align-self: flex-end;
-}
+About MRZ 
 
-.bot {
-  background: #334155;
-  align-self: flex-start;
-}
+MRZ Official is a professional gaming community built for teamwork, skill, and entertainment. We bring passionate gamers together to create unforgettable moments and compete as one powerful team.
 
-#inputBox {
-  display: flex;
-  padding: 10px;
-  background: #1e293b;
-}
+Our Members 
 
-input {
-  flex: 1;
-  padding: 10px;
-  border-radius: 8px;
-  border: none;
-  outline: none;
-}
+Member 1
 
-button {
-  margin-left: 10px;
-  padding: 10px 15px;
-  border: none;
-  background: #22c55e;
-  color: white;
-  border-radius: 8px;
-  cursor: pointer;
-}
-</style>
-</head>
+Instagram | Discord
 
-<body>
+Member 2
 
-<header>🧮 Math Solver GPT</header>
+Instagram | Discord
 
-<div id="chat"></div>
+Member 3
 
-<div id="inputBox">
-  <input id="input" placeholder="Enter math (e.g. 2+2 or 5*x=10)">
-  <button onclick="solve()">Send</button>
-</div>
+Instagram | Discord
 
-<script>
-const chat = document.getElementById("chat");
+Member 4
 
-function addMessage(text, type) {
-  let div = document.createElement("div");
-  div.className = "msg " + type;
-  div.innerText = text;
-  chat.appendChild(div);
-  chat.scrollTop = chat.scrollHeight;
-}
+Instagram | Discord
 
-function solve() {
-  let input = document.getElementById("input").value.trim();
-  if (!input) return;
+Gallery 
 
-  addMessage(input, "user");
-  document.getElementById("input").value = "";
+Contact / Join 
 
-  try {
-    let result;
+Add your contact details later.
 
-    // Check if it's an equation
-    if (input.includes("=")) {
-      let sides = input.split("=");
-      let expr = `${sides[0]} - (${sides[1]})`;
+🎵
 
-      let simplified = math.simplify(expr).toString();
-      result = "Rearranged: " + simplified + " = 0\n";
-
-      try {
-        let solution = math.solve(expr, 'x');
-        result += "Solution: x = " + solution;
-      } catch {
-        result += "Could not solve symbolically";
-      }
-
-    } else {
-      result = math.evaluate(input);
-    }
-
-    addMessage(result.toString(), "bot");
-
-  } catch (err) {
-    addMessage("❌ Invalid math input", "bot");
-  }
-}
-</script>
-
-</body>
-</html>
+© 2026 MRZ Official 
