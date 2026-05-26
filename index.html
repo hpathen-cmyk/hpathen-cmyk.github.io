@@ -19,7 +19,6 @@ body{
   overflow-x:hidden;
 }
 
-/* HEADER */
 header{
   position:sticky;
   top:0;
@@ -32,7 +31,7 @@ header{
 
 nav{
   display:flex;
-  justify-content:space-between;
+  justify-content:center;
   align-items:center;
 }
 
@@ -42,7 +41,6 @@ nav{
   font-weight:bold;
 }
 
-/* HERO */
 .hero{
   min-height:100vh;
   display:flex;
@@ -64,7 +62,6 @@ nav{
 h1{
   font-size:3rem;
   color:gold;
-  animation:fadeIn 1.5s ease;
 }
 
 p{
@@ -89,7 +86,11 @@ p{
   transform:scale(1.05);
 }
 
-/* SECTIONS */
+.btn.active{
+  background:limegreen;
+  color:white;
+}
+
 section{
   padding:70px 20px;
 }
@@ -101,16 +102,15 @@ section{
   margin-bottom:30px;
 }
 
-/* MEMBERS */
-.slider{
-  display:flex;
+.members-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(200px, 1fr));
   gap:15px;
-  overflow-x:auto;
-  padding:10px;
+  max-width:1200px;
+  margin:auto;
 }
 
 .card{
-  min-width:220px;
   background:rgba(255,255,255,0.08);
   backdrop-filter:blur(12px);
   border-radius:20px;
@@ -128,12 +128,11 @@ section{
   width:90px;
   height:90px;
   border-radius:50%;
-  background:#333;
   border:2px solid gold;
   margin:0 auto 15px;
+  background:#333;
 }
 
-/* GALLERY */
 .gallery{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
@@ -147,38 +146,14 @@ section{
   border:1px solid rgba(255,215,0,0.2);
 }
 
-/* FOOTER */
 footer{
   text-align:center;
   padding:30px;
   color:#aaa;
 }
 
-/* MUSIC BUTTON */
-.music-btn{
-  position:fixed;
-  right:20px;
-  bottom:20px;
-  width:60px;
-  height:60px;
-  border:none;
-  border-radius:50%;
-  background:gold;
-  color:black;
-  font-size:24px;
-  cursor:pointer;
-}
-
-/* ANIMATION */
-@keyframes fadeIn{
-  from{
-    opacity:0;
-    transform:translateY(20px);
-  }
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+html{
+  scroll-behavior:smooth;
 }
 </style>
 </head>
@@ -186,78 +161,72 @@ footer{
 <body>
 
 <header>
-  <nav>
-    <div class="logo">MRZ Official</div>
-  </nav>
+<nav>
+<div class="logo">MRZ Official</div>
+</nav>
 </header>
 
 <section class="hero">
-  <div class="glass">
-    <h1>Welcome to MRZ Official</h1>
-    <p>Official Gaming Team</p>
-    <button class="btn">Join Team</button>
-  </div>
+<div class="glass">
+<h1>Welcome to MRZ Official</h1>
+<p>Official Gaming Team</p>
+<button class="btn">Join Team</button>
+</div>
+</section>
+
+<section id="about">
+<h2 class="section-title">About MRZ</h2>
+<div class="glass">
+<p>
+MRZ Official is a professional gaming community built for teamwork, skill, and entertainment.
+We bring passionate gamers together to compete as one powerful team.
+</p>
+</div>
+</section>
+
+<section id="members">
+<h2 class="section-title">Our Members</h2>
+<div class="members-grid" id="membersGrid"></div>
 </section>
 
 <section>
-  <h2 class="section-title">About MRZ</h2>
-  <div class="glass">
-    <p>
-      MRZ Official is a professional gaming community built for teamwork, skill, and entertainment.
-      We bring passionate gamers together to create unforgettable moments and compete as one powerful team.
-    </p>
-  </div>
+<h2 class="section-title">Gallery</h2>
+<div class="gallery">
+<div></div><div></div><div></div><div></div>
+</div>
 </section>
-
-<section>
-  <h2 class="section-title">Our Members</h2>
-
-  <div class="slider">
-
-    <div class="card">
-      <div class="avatar"></div>
-      <h3>Member 1</h3>
-      <p>Instagram | Discord</p>
-    </div>
-
-    <div class="card">
-      <div class="avatar"></div>
-      <h3>Member 2</h3>
-      <p>Instagram | Discord</p>
-    </div>
-
-    <div class="card">
-      <div class="avatar"></div>
-      <h3>Member 3</h3>
-      <p>Instagram | Discord</p>
-    </div>
-
-  </div>
-</section>
-
-<section>
-  <h2 class="section-title">Gallery</h2>
-
-  <div class="gallery">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-  </div>
-</section>
-
-<section>
-  <h2 class="section-title">Contact / Join</h2>
-  <p style="text-align:center;">
-    Add your contact details later.
-  </p>
-</section>
-
-<button class="music-btn">🎵</button>
 
 <footer>
-  © 2026 MRZ Official
+© 2026 MRZ Official
 </footer>
+
+<script>
+// Button toggle
+const btn = document.querySelector(".btn");
+
+btn.addEventListener("click", () => {
+  btn.classList.toggle("active");
+  btn.innerText = btn.classList.contains("active")
+    ? "Joined ✔"
+    : "Join Team";
+});
+
+// 35 members auto generator
+const grid = document.getElementById("membersGrid");
+
+for(let i = 1; i <= 35; i++){
+  const card = document.createElement("div");
+  card.className = "card";
+
+  card.innerHTML = `
+    <div class="avatar"></div>
+    <h3>Member ${i}</h3>
+    <p>Instagram | Discord</p>
+  `;
+
+  grid.appendChild(card);
+}
+</script>
 
 </body>
 </html>
