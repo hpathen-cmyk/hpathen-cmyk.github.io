@@ -3,27 +3,36 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRZ Official PRO</title>
+<title>MRZ ULTRA PRO</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background: radial-gradient(circle,#0f0f0f,#000);
+  background:#000;
   color:white;
+  overflow-x:hidden;
+}
+
+/* PARTICLES CANVAS */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
 }
 
 /* HEADER */
 header{
   text-align:center;
   padding:20px;
-  background:#111;
+  background:rgba(20,20,20,0.8);
   color:gold;
-  font-size:28px;
+  font-size:26px;
   font-weight:bold;
 }
 
-/* SEARCH + FILTER */
+/* TOP BAR */
 .topbar{
   display:flex;
   flex-wrap:wrap;
@@ -32,11 +41,16 @@ header{
   padding:10px;
 }
 
-input, select{
+input, select, button{
   padding:10px;
   border-radius:10px;
   border:none;
   outline:none;
+}
+
+button{
+  background:gold;
+  cursor:pointer;
 }
 
 /* GRID */
@@ -50,31 +64,14 @@ input, select{
 
 /* 3D CARD */
 .card{
-  background:linear-gradient(145deg,#1a1a1a,#0d0d0d);
+  background:linear-gradient(145deg,#1a1a1a,#0b0b0b);
   border:1px solid gold;
   border-radius:15px;
   text-align:center;
   padding:15px;
-  cursor:pointer;
-  transition:0.4s;
   transform-style:preserve-3d;
-  opacity:0;
-  transform:translateY(20px);
-  animation:fadeIn 0.5s forwards;
-}
-
-/* 3D FLOAT EFFECT */
-.card:hover{
-  transform:rotateY(15deg) rotateX(10deg) scale(1.05);
-  box-shadow:0 0 20px gold;
-}
-
-/* ANIMATION */
-@keyframes fadeIn{
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+  transition:0.2s;
+  cursor:pointer;
 }
 
 /* IMAGE */
@@ -84,11 +81,12 @@ input, select{
   border-radius:50%;
   border:2px solid gold;
   object-fit:cover;
-  transform:translateZ(30px);
+  transform:translateZ(40px);
 }
 
 /* TEXT */
 h3{
+  transform:translateZ(30px);
   margin:10px 0 5px;
 }
 
@@ -99,6 +97,14 @@ h3{
   color:gold;
   border-radius:10px;
   font-size:12px;
+  transform:translateZ(20px);
+}
+
+/* ADMIN PANEL */
+#admin{
+  display:none;
+  padding:10px;
+  text-align:center;
 }
 
 /* MODAL */
@@ -115,45 +121,40 @@ h3{
 }
 
 .modal-box{
-  background:#1a1a1a;
+  background:#111;
   padding:20px;
   border-radius:15px;
-  text-align:center;
   border:1px solid gold;
-}
-
-.modal-box img{
-  width:100px;
-  height:100px;
-  border-radius:50%;
-  border:2px solid gold;
-}
-
-button{
-  margin-top:10px;
-  padding:6px 12px;
-  background:gold;
-  border:none;
-  cursor:pointer;
-  border-radius:5px;
+  text-align:center;
 }
 </style>
 </head>
 
 <body>
 
-<header>MRZ OFFICIAL NEXT PRO</header>
+<canvas id="bg"></canvas>
 
-<!-- SEARCH + FILTER -->
+<header>MRZ ULTRA PRO DASHBOARD</header>
+
+<!-- TOP BAR -->
 <div class="topbar">
-  <input type="text" id="search" placeholder="Search member...">
+  <input id="search" placeholder="Search member...">
   <select id="filter">
-    <option value="All">All</option>
-    <option value="God Father">God Father</option>
-    <option value="Leader">Leader</option>
-    <option value="Co Leader">Co Leader</option>
-    <option value="Member">Member</option>
+    <option>All</option>
+    <option>God Father</option>
+    <option>Leader</option>
+    <option>Co Leader</option>
+    <option>Member</option>
   </select>
+  <button onclick="toggleAdmin()">Admin</button>
+</div>
+
+<!-- ADMIN PANEL -->
+<div id="admin">
+  <input id="name" placeholder="Name">
+  <input id="role" placeholder="Role">
+  <input id="image" placeholder="Image URL">
+  <button onclick="addMember()">Add Member</button>
 </div>
 
 <div class="members-grid" id="grid"></div>
@@ -161,7 +162,6 @@ button{
 <!-- MODAL -->
 <div id="modal">
   <div class="modal-box">
-    <img id="mimg">
     <h3 id="mname"></h3>
     <div id="mrole" class="badge"></div>
     <br>
@@ -171,65 +171,136 @@ button{
 
 <script>
 
-const members = [
+/* SOUND */
+function clickSound(){
+  let ctx = new (window.AudioContext || window.webkitAudioContext)();
+  let osc = ctx.createOscillator();
+  osc.type="sine";
+  osc.frequency.value=600;
+  osc.connect(ctx.destination);
+  osc.start();
+  osc.stop(ctx.currentTime+0.1);
+}
+
+/* PARTICLES */
+const canvas=document.getElementById("bg");
+const ctx=canvas.getContext("2d");
+
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let particles=[];
+for(let i=0;i<80;i++){
+  particles.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*2,
+    dx:(Math.random()-0.5)*1,
+    dy:(Math.random()-0.5)*1
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  particles.forEach(p=>{
+    p.x+=p.dx;
+    p.y+=p.dy;
+
+    if(p.x<0||p.x>canvas.width)p.dx*=-1;
+    if(p.y<0||p.y>canvas.height)p.dy*=-1;
+
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fillStyle="gold";
+    ctx.fill();
+  });
+
+  requestAnimationFrame(animate);
+}
+animate();
+
+/* DATA */
+let members=JSON.parse(localStorage.getItem("mrz"))||[
 {name:"Mrz Thoppi",role:"God Father",image:"https://i.postimg.cc/7LPXhncP/Screenshot-20260524-145928-Instagram.png"},
 {name:"Mrz Rambo",role:"Leader",image:"https://i.postimg.cc/pTCmTKwX/Screenshot-20260527-185749-Instagram.png"},
 {name:"Mrz Sheik",role:"Co Leader",image:"https://i.postimg.cc/pLk8ybKM/Screenshot-20260527-185803-Instagram.png"},
-{name:"Mrz Mack",role:"Co Leader",image:"https://i.postimg.cc/mDnykffZ/Screenshot-20260527-191534-Instagram.png"},
-{name:"Mrz Appapan",role:"Member",image:"https://i.postimg.cc/kXWMTQ5D/Screenshot-20260527-192458-Instagram.png"},
-{name:"Mrz Bilal",role:"Member",image:"https://i.postimg.cc/L8RPD6mZ/Screenshot-20260527-193149-Instagram.png"},
-{name:"Mrz Raju Bhai",role:"Member",image:"https://i.postimg.cc/MpyDZFpj/Screenshot-20260527-194203-Instagram.png"},
-{name:"Mrz Kurup Denny",role:"Member",image:"https://i.postimg.cc/m2840S0M/Screenshot-20260527-202248-Instagram.png"},
-{name:"Mrz Fluffy",role:"Member",image:"https://i.postimg.cc/J7d3hwV3/Screenshot-20260527-204830-Instagram.png"},
-{name:"Mrz CK Mari",role:"Member",image:"https://i.postimg.cc/NfdRzWDV/Screenshot-20260527-205651-Instagram.png"},
-{name:"Mrz Malik",role:"Member",image:"https://i.postimg.cc/jqpjdv57/Screenshot-20260527-210418-Instagram.png"},
-{name:"Mrz Falcon",role:"Member",image:"https://i.postimg.cc/j5rW2bRC/Screenshot-20260527-212914-Instagram.png"},
-{name:"Mrz DNL",role:"Member",image:"https://i.postimg.cc/FHrX9ntm/Screenshot-20260527-213517-Instagram.png"},
-{name:"Mrz Amban Pro",role:"Member",image:"https://i.postimg.cc/jjv5xJ3x/Screenshot-20260527-214523-Instagram.png"}
+{name:"Mrz Mack",role:"Co Leader",image:"https://i.postimg.cc/mDnykffZ/Screenshot-20260527-191534-Instagram.png"}
 ];
 
 const grid=document.getElementById("grid");
-const search=document.getElementById("search");
-const filter=document.getElementById("filter");
 
 function show(list){
   grid.innerHTML="";
+  list.forEach(m=>{
+    let div=document.createElement("div");
+    div.className="card";
 
-  list.forEach((m,i)=>{
-    const card=document.createElement("div");
-    card.className="card";
-    card.style.animationDelay=(i*0.05)+"s";
-
-    card.innerHTML=`
+    div.innerHTML=`
       <img class="avatar" src="${m.image}">
       <h3>${m.name}</h3>
       <div class="badge">${m.role}</div>
     `;
 
-    card.onclick=()=>openModal(m);
-    grid.appendChild(card);
+    /* 3D tilt */
+    div.addEventListener("mousemove",(e)=>{
+      let x=(e.offsetX/div.clientWidth)*20-10;
+      let y=(e.offsetY/div.clientHeight)*20-10;
+      div.style.transform=`rotateY(${x}deg) rotateX(${-y}deg)`;
+    });
+
+    div.addEventListener("mouseleave",()=>{
+      div.style.transform="rotateY(0deg) rotateX(0deg)";
+    });
+
+    div.onclick=()=>{
+      clickSound();
+      openModal(m);
+    };
+
+    grid.appendChild(div);
   });
 }
+
+show(members);
+
+/* SEARCH + FILTER */
+document.getElementById("search").oninput=update;
+document.getElementById("filter").onchange=update;
 
 function update(){
-  let value=search.value.toLowerCase();
-  let role=filter.value;
+  let s=document.getElementById("search").value.toLowerCase();
+  let f=document.getElementById("filter").value;
 
-  let filtered=members.filter(m=>{
-    let matchName=m.name.toLowerCase().includes(value);
-    let matchRole=(role==="All") || (m.role===role);
-    return matchName && matchRole;
+  let out=members.filter(m=>{
+    return m.name.toLowerCase().includes(s) &&
+    (f==="All"||m.role===f);
   });
 
-  show(filtered);
+  show(out);
 }
 
-search.addEventListener("input",update);
-filter.addEventListener("change",update);
+/* ADMIN */
+function toggleAdmin(){
+  let a=document.getElementById("admin");
+  a.style.display=a.style.display==="block"?"none":"block";
+}
 
+function addMember(){
+  let m={
+    name:document.getElementById("name").value,
+    role:document.getElementById("role").value,
+    image:document.getElementById("image").value
+  };
+
+  members.push(m);
+  localStorage.setItem("mrz",JSON.stringify(members));
+  show(members);
+}
+
+/* MODAL */
 function openModal(m){
   document.getElementById("modal").style.display="flex";
-  document.getElementById("mimg").src=m.image;
   document.getElementById("mname").innerText=m.name;
   document.getElementById("mrole").innerText=m.role;
 }
@@ -237,8 +308,6 @@ function openModal(m){
 function closeModal(){
   document.getElementById("modal").style.display="none";
 }
-
-show(members);
 
 </script>
 
