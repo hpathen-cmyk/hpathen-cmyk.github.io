@@ -3,13 +3,13 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRZ Official</title>
+<title>MRZ Official PRO</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#0b0b0b;
+  background: radial-gradient(circle,#0f0f0f,#000);
   color:white;
 }
 
@@ -19,45 +19,80 @@ header{
   padding:20px;
   background:#111;
   color:gold;
-  font-size:26px;
+  font-size:28px;
   font-weight:bold;
+}
+
+/* SEARCH + FILTER */
+.topbar{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:10px;
+  padding:10px;
+}
+
+input, select{
+  padding:10px;
+  border-radius:10px;
+  border:none;
+  outline:none;
 }
 
 /* GRID */
 .members-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:15px;
+  gap:20px;
   padding:20px;
-  perspective:1000px;
+  perspective:1200px;
 }
 
-/* CARD */
+/* 3D CARD */
 .card{
-  background:#1a1a1a;
+  background:linear-gradient(145deg,#1a1a1a,#0d0d0d);
   border:1px solid gold;
   border-radius:15px;
   text-align:center;
   padding:15px;
   cursor:pointer;
-  transition:0.3s;
+  transition:0.4s;
+  transform-style:preserve-3d;
+  opacity:0;
+  transform:translateY(20px);
+  animation:fadeIn 0.5s forwards;
 }
 
+/* 3D FLOAT EFFECT */
 .card:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 15px gold;
+  transform:rotateY(15deg) rotateX(10deg) scale(1.05);
+  box-shadow:0 0 20px gold;
 }
 
+/* ANIMATION */
+@keyframes fadeIn{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* IMAGE */
 .avatar{
   width:80px;
   height:80px;
   border-radius:50%;
   border:2px solid gold;
   object-fit:cover;
+  transform:translateZ(30px);
+}
+
+/* TEXT */
+h3{
+  margin:10px 0 5px;
 }
 
 .badge{
-  margin-top:8px;
   display:inline-block;
   padding:5px 10px;
   background:rgba(255,215,0,0.2);
@@ -85,7 +120,6 @@ header{
   border-radius:15px;
   text-align:center;
   border:1px solid gold;
-  width:260px;
 }
 
 .modal-box img{
@@ -101,16 +135,30 @@ button{
   background:gold;
   border:none;
   cursor:pointer;
+  border-radius:5px;
 }
 </style>
 </head>
 
 <body>
 
-<header>MRZ OFFICIAL MEMBERS</header>
+<header>MRZ OFFICIAL NEXT PRO</header>
+
+<!-- SEARCH + FILTER -->
+<div class="topbar">
+  <input type="text" id="search" placeholder="Search member...">
+  <select id="filter">
+    <option value="All">All</option>
+    <option value="God Father">God Father</option>
+    <option value="Leader">Leader</option>
+    <option value="Co Leader">Co Leader</option>
+    <option value="Member">Member</option>
+  </select>
+</div>
 
 <div class="members-grid" id="grid"></div>
 
+<!-- MODAL -->
 <div id="modal">
   <div class="modal-box">
     <img id="mimg">
@@ -122,7 +170,6 @@ button{
 </div>
 
 <script>
-document.addEventListener("DOMContentLoaded", function(){
 
 const members = [
 {name:"Mrz Thoppi",role:"God Father",image:"https://i.postimg.cc/7LPXhncP/Screenshot-20260524-145928-Instagram.png"},
@@ -131,43 +178,69 @@ const members = [
 {name:"Mrz Mack",role:"Co Leader",image:"https://i.postimg.cc/mDnykffZ/Screenshot-20260527-191534-Instagram.png"},
 {name:"Mrz Appapan",role:"Member",image:"https://i.postimg.cc/kXWMTQ5D/Screenshot-20260527-192458-Instagram.png"},
 {name:"Mrz Bilal",role:"Member",image:"https://i.postimg.cc/L8RPD6mZ/Screenshot-20260527-193149-Instagram.png"},
-{name:"Mrz Raju Bhai",role:"Member",image:"https://i.postimg.cc/MpyDZFpj/Screenshot-20260527-194203-Instagram.png"}
+{name:"Mrz Raju Bhai",role:"Member",image:"https://i.postimg.cc/MpyDZFpj/Screenshot-20260527-194203-Instagram.png"},
+{name:"Mrz Kurup Denny",role:"Member",image:"https://i.postimg.cc/m2840S0M/Screenshot-20260527-202248-Instagram.png"},
+{name:"Mrz Fluffy",role:"Member",image:"https://i.postimg.cc/J7d3hwV3/Screenshot-20260527-204830-Instagram.png"},
+{name:"Mrz CK Mari",role:"Member",image:"https://i.postimg.cc/NfdRzWDV/Screenshot-20260527-205651-Instagram.png"},
+{name:"Mrz Malik",role:"Member",image:"https://i.postimg.cc/jqpjdv57/Screenshot-20260527-210418-Instagram.png"},
+{name:"Mrz Falcon",role:"Member",image:"https://i.postimg.cc/j5rW2bRC/Screenshot-20260527-212914-Instagram.png"},
+{name:"Mrz DNL",role:"Member",image:"https://i.postimg.cc/FHrX9ntm/Screenshot-20260527-213517-Instagram.png"},
+{name:"Mrz Amban Pro",role:"Member",image:"https://i.postimg.cc/jjv5xJ3x/Screenshot-20260527-214523-Instagram.png"}
 ];
 
 const grid=document.getElementById("grid");
+const search=document.getElementById("search");
+const filter=document.getElementById("filter");
 
-function show(){
+function show(list){
   grid.innerHTML="";
-  members.forEach(m=>{
-    const div=document.createElement("div");
-    div.className="card";
 
-    div.innerHTML=`
+  list.forEach((m,i)=>{
+    const card=document.createElement("div");
+    card.className="card";
+    card.style.animationDelay=(i*0.05)+"s";
+
+    card.innerHTML=`
       <img class="avatar" src="${m.image}">
       <h3>${m.name}</h3>
       <div class="badge">${m.role}</div>
     `;
 
-    div.onclick=()=>openModal(m);
-    grid.appendChild(div);
+    card.onclick=()=>openModal(m);
+    grid.appendChild(card);
   });
 }
 
-show();
+function update(){
+  let value=search.value.toLowerCase();
+  let role=filter.value;
 
-window.openModal=function(m){
+  let filtered=members.filter(m=>{
+    let matchName=m.name.toLowerCase().includes(value);
+    let matchRole=(role==="All") || (m.role===role);
+    return matchName && matchRole;
+  });
+
+  show(filtered);
+}
+
+search.addEventListener("input",update);
+filter.addEventListener("change",update);
+
+function openModal(m){
   document.getElementById("modal").style.display="flex";
   document.getElementById("mimg").src=m.image;
   document.getElementById("mname").innerText=m.name;
   document.getElementById("mrole").innerText=m.role;
 }
 
-window.closeModal=function(){
+function closeModal(){
   document.getElementById("modal").style.display="none";
 }
 
-});
+show(members);
+
 </script>
 
 </body>
-</html>
+  </html>
