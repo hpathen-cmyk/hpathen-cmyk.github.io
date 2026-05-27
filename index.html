@@ -3,28 +3,83 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRZ Scroll Pro</title>
+<title>MRZ Framer Pro</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
+  background:#070A12;
   color:white;
-  transition:0.5s ease;
-  background:#05060a;
+  overflow-x:hidden;
+}
+
+/* BACKGROUND GRADIENT */
+.bg{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:radial-gradient(circle at top,#1b2a4a,#070A12);
+  z-index:-1;
+  transition:1s ease;
 }
 
 /* HEADER */
 header{
-  text-align:center;
-  padding:20px;
-  font-size:26px;
-  font-weight:bold;
   position:sticky;
   top:0;
+  text-align:center;
+  padding:18px;
+  font-size:26px;
+  font-weight:bold;
   background:rgba(0,0,0,0.4);
-  backdrop-filter: blur(8px);
+  backdrop-filter: blur(10px);
+  color:#7ffcff;
   z-index:10;
+}
+
+/* HERO SECTION */
+.hero{
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  flex-direction:column;
+  text-align:center;
+}
+
+.hero h1{
+  font-size:40px;
+  color:#7ffcff;
+  opacity:0;
+  transform:translateY(40px);
+  animation:fadeUp 1s forwards;
+}
+
+.hero p{
+  opacity:0;
+  animation:fadeUp 1s 0.3s forwards;
+  color:#aaa;
+}
+
+@keyframes fadeUp{
+  to{
+    opacity:1;
+    transform:translateY(0);
+  }
+}
+
+/* MEMBERS SECTION */
+.section{
+  padding:60px 20px;
+}
+
+.title{
+  text-align:center;
+  font-size:24px;
+  margin-bottom:20px;
   color:#7ffcff;
 }
 
@@ -33,25 +88,29 @@ header{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:15px;
-  padding:20px;
 }
 
-/* CARD */
+/* CARD (FRAMER STYLE) */
 .card{
   background:rgba(255,255,255,0.06);
+  border:1px solid rgba(127,255,255,0.3);
   border-radius:15px;
-  text-align:center;
   padding:15px;
-  border:1px solid rgba(255,255,255,0.1);
-  backdrop-filter: blur(8px);
-  transition:0.3s;
-  cursor:pointer;
+  text-align:center;
+  backdrop-filter: blur(12px);
+  transition:0.5s ease;
+  transform:translateY(40px);
+  opacity:0;
+}
+
+.card.show{
+  transform:translateY(0);
+  opacity:1;
 }
 
 .card:hover{
   transform:scale(1.05);
-  border:1px solid #7ffcff;
-  box-shadow:0 0 15px #7ffcff;
+  box-shadow:0 0 20px #7ffcff;
 }
 
 /* IMAGE */
@@ -64,8 +123,8 @@ header{
 
 /* BADGE */
 .badge{
-  display:inline-block;
   margin-top:8px;
+  display:inline-block;
   padding:5px 10px;
   font-size:12px;
   border-radius:10px;
@@ -92,13 +151,13 @@ header{
   border:1px solid #7ffcff;
   text-align:center;
 }
+
 button{
   margin-top:10px;
   padding:8px 12px;
   background:#7ffcff;
   border:none;
   cursor:pointer;
-  font-weight:bold;
   border-radius:5px;
 }
 </style>
@@ -106,9 +165,21 @@ button{
 
 <body>
 
-<header>🌌 MRZ SCROLL PRO MEMBERS 🌌</header>
+<div class="bg"></div>
 
-<div class="members-grid" id="grid"></div>
+<header>🌟 MRZ FRAMER PRO 🌟</header>
+
+<!-- HERO -->
+<div class="hero">
+  <h1>MRZ OFFICIAL CLAN</h1>
+  <p>Scroll down to view members</p>
+</div>
+
+<!-- MEMBERS -->
+<div class="section">
+  <div class="title">Members</div>
+  <div class="members-grid" id="grid"></div>
+</div>
 
 <!-- MODAL -->
 <div id="modal">
@@ -122,25 +193,7 @@ button{
 
 <script>
 
-/* ===== SCROLL THEME SYSTEM ===== */
-window.addEventListener("scroll", () => {
-  let y = window.scrollY;
-
-  if (y < 400) {
-    document.body.style.background = "#05060a"; // Aurora dark
-  } 
-  else if (y < 900) {
-    document.body.style.background = "#001b3d"; // Blue
-  } 
-  else if (y < 1400) {
-    document.body.style.background = "#120018"; // Purple
-  } 
-  else {
-    document.body.style.background = "#000000"; // Deep black neon
-  }
-});
-
-/* ===== ALL MEMBERS ===== */
+/* ===== MEMBERS DATA (ALL INCLUDED) ===== */
 const members = [
 {name:"Mrz Thoppi",role:"God Father",image:"https://i.postimg.cc/7LPXhncP/Screenshot-20260524-145928-Instagram.png"},
 {name:"Mrz Rambo",role:"Leader",image:"https://i.postimg.cc/pTCmTKwX/Screenshot-20260527-185749-Instagram.png"},
@@ -155,18 +208,12 @@ const members = [
 {name:"Mrz Malik",role:"Member",image:"https://i.postimg.cc/jqpjdv57/Screenshot-20260527-210418-Instagram.png"},
 {name:"Mrz Falcon",role:"Member",image:"https://i.postimg.cc/j5rW2bRC/Screenshot-20260527-212914-Instagram.png"},
 {name:"Mrz DNL",role:"Member",image:"https://i.postimg.cc/FHrX9ntm/Screenshot-20260527-213517-Instagram.png"},
-{name:"Mrz Amban Pro",role:"Member",image:"https://i.postimg.cc/jjv5xJ3x/Screenshot-20260527-214523-Instagram.png"},
-{name:"Mrz Charan",role:"Member",image:"https://via.placeholder.com/100"},
-{name:"Mrz Joshua",role:"Member",image:"https://via.placeholder.com/100"},
-{name:"Mrz Takai",role:"Member",image:"https://via.placeholder.com/100"},
-{name:"Mrz Speedo",role:"Member",image:"https://via.placeholder.com/100"},
-{name:"Mrz Pranav",role:"Member",image:"https://via.placeholder.com/100"},
-{name:"Mrz Bruce",role:"Member",image:"https://via.placeholder.com/100"}
+{name:"Mrz Amban Pro",role:"Member",image:"https://i.postimg.cc/jjv5xJ3x/Screenshot-20260527-214523-Instagram.png"}
 ];
 
 const grid=document.getElementById("grid");
 
-/* ===== SHOW MEMBERS ===== */
+/* ===== RENDER ===== */
 function show(){
   grid.innerHTML="";
   members.forEach(m=>{
@@ -181,9 +228,21 @@ function show(){
 
     div.onclick=()=>openModal(m);
     grid.appendChild(div);
+
+    setTimeout(()=>div.classList.add("show"),100);
   });
 }
 show();
+
+/* ===== SCROLL ANIMATION (FRAMER STYLE) ===== */
+window.addEventListener("scroll",()=>{
+  document.querySelectorAll(".card").forEach(card=>{
+    let top=card.getBoundingClientRect().top;
+    if(top<window.innerHeight-100){
+      card.classList.add("show");
+    }
+  });
+});
 
 /* ===== MODAL ===== */
 function openModal(m){
