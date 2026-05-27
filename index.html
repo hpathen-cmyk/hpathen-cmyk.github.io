@@ -26,6 +26,7 @@ header{
   backdrop-filter:blur(14px);
   border-bottom:1px solid rgba(255,215,0,0.2);
   padding:15px 20px;
+  z-index:1000;
 }
 
 .logo{
@@ -118,12 +119,12 @@ section{
 }
 
 .avatar{
-  width:90px;
-  height:90px;
+  width:100px;
+  height:100px;
   border-radius:50%;
-  border:2px solid gold;
-  margin:0 auto 15px;
-  background:#333;
+  border:3px solid gold;
+  object-fit:cover;
+  margin-bottom:15px;
 }
 
 .badge{
@@ -141,47 +142,46 @@ footer{
   padding:30px;
   color:#aaa;
 }
-
 </style>
 </head>
 
 <body>
 
 <header>
-<div class="logo">MRZ Official</div>
+  <div class="logo">MRZ Official</div>
 </header>
 
 <section class="hero">
-<div class="glass">
-<h1>Welcome to MRZ Official</h1>
-<p>Official Gaming Team</p>
-<button class="btn">Join Team</button>
-</div>
+  <div class="glass">
+    <h1>Welcome to MRZ Official</h1>
+    <p>Official Gaming Team</p>
+    <button class="btn" id="joinBtn">Join Team</button>
+  </div>
 </section>
 
 <section>
-<h2 class="section-title">About MRZ</h2>
-<div class="glass">
-<p>
-MRZ Official is a professional gaming community built for teamwork, skill, and entertainment.
-We bring passionate gamers together to create a powerful team.
-</p>
-</div>
+  <h2 class="section-title">About MRZ</h2>
+  <div class="glass">
+    <p>
+      MRZ Official is a professional gaming community built for teamwork,
+      skill, and entertainment.
+    </p>
+  </div>
 </section>
 
 <section>
-<h2 class="section-title">Our Members</h2>
-<div class="members-grid" id="membersGrid"></div>
+  <h2 class="section-title">Our Members</h2>
+  <div class="members-grid" id="membersGrid"></div>
 </section>
 
 <footer>
-© 2026 MRZ Official
+  © 2026 MRZ Official
 </footer>
 
 <script>
 
-// Button toggle
-const btn = document.querySelector(".btn");
+// Join button
+const btn = document.getElementById("joinBtn");
 
 btn.addEventListener("click", () => {
   btn.classList.toggle("active");
@@ -190,70 +190,42 @@ btn.addEventListener("click", () => {
     : "Join Team";
 });
 
-// Members data (your full list)
+// Members
 const members = [
-  "Mrz thoppi (God father)",
-  "Mrz rambo (Leader)",
-  "Mrz sheik (Co Leader)",
-  "Mrz mack (Co Leader)",
-  "Mrz appapan (Member)",
-  "Mrz bilal (Member)",
-  "Mrz Raju bhai (Member)",
-  "Mrz kurup denny (Member)",
-  "Mrz fluffy (Member)",
-  "Mrz ck mari (Member)",
-  "Mrz malik (Member)",
-  "Mrz zendex duvor (Member)",
-  "Mrz Alex duver (Member)",
-  "Mrz falcon (Member)",
-  "Mrz dnl (Member)",
-  "Mrz Amban pro (Member)",
-  "Mrz Charan (Member)",
-  "Mrz the God (Member)",
-  "Mrz Joshua (Member)",
-  "Mrz takai (Member)",
-  "Mrz sakai (Member)",
-  "Mrz speedo (Member)",
-  "Mrz ikkrumon (Member)",
-  "Mrz pranav (Member)",
-  "Mrz pappadam (Member)",
-  "Mrz kidu (Member)",
-  "Mrz Bruce (Member)",
-  "Mrz jasi (Member)",
-  "Mrz JJ (Member)",
-  "Mrz Charlie (Member)",
-  "Mrz kareemeen gwad (Member)",
-  "Mrz chapz (Member)",
-  "Mrz rozario (Member)",
-  "Mrz Alan (Member)",
-  "Mrz bull op (Member)",
-  "Mrz usman (Member)",
-  "Mrz Blake (Member)",
-  "Mrz ismail (Member)",
-  "Mrz minnal (Member)",
-  "Mrz shibu (Member)",
-  "Mrz bobby (Member)",
-  "Mrz rayan (Member)",
-  "Mrz Cooper (Member)"
+{
+  name:"Mrz thoppi",
+  role:"God Father",
+  img:"images/thoppi.jpg"
+},
+{
+  name:"Mrz rambo",
+  role:"Leader",
+  img:"images/default.jpg"
+},
+{
+  name:"Mrz sheik",
+  role:"Co Leader",
+  img:"images/default.jpg"
+},
+{
+  name:"Mrz mack",
+  role:"Co Leader",
+  img:"images/default.jpg"
+}
 ];
 
-// render members
+// Render members
 const grid = document.getElementById("membersGrid");
 
-members.forEach(name => {
-
-  let role = "Member";
-  if(name.includes("God father")) role = "God Father";
-  else if(name.includes("Leader")) role = "Leader";
-  else if(name.includes("Co Leader")) role = "Co Leader";
+members.forEach(member => {
 
   const card = document.createElement("div");
   card.className = "card";
 
   card.innerHTML = `
-    <div class="avatar"></div>
-    <h3>${name}</h3>
-    <div class="badge">${role}</div>
+    <img src="${member.img}" class="avatar">
+    <h3>${member.name}</h3>
+    <div class="badge">${member.role}</div>
     <p>Instagram | Discord</p>
   `;
 
