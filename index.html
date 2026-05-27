@@ -3,64 +3,55 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRZ MAX GRAPHICS</title>
+<title>MRZ Scroll Pro</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#000;
-  overflow:hidden;
   color:white;
-}
-
-/* CANVAS LAYERS */
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
+  transition:0.5s ease;
+  background:#05060a;
 }
 
 /* HEADER */
 header{
-  position:relative;
   text-align:center;
   padding:20px;
-  font-size:28px;
+  font-size:26px;
   font-weight:bold;
-  color:#7fffd4;
-  text-shadow:0 0 20px #00ffd5;
+  position:sticky;
+  top:0;
   background:rgba(0,0,0,0.4);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(8px);
+  z-index:10;
+  color:#7ffcff;
 }
 
 /* GRID */
 .members-grid{
-  position:relative;
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:20px;
+  gap:15px;
   padding:20px;
-  perspective:1400px;
 }
 
-/* CARD (HIGH GLOW 3D) */
+/* CARD */
 .card{
-  background:rgba(255,255,255,0.05);
-  border:1px solid rgba(0,255,200,0.4);
+  background:rgba(255,255,255,0.06);
   border-radius:15px;
   text-align:center;
   padding:15px;
+  border:1px solid rgba(255,255,255,0.1);
+  backdrop-filter: blur(8px);
+  transition:0.3s;
   cursor:pointer;
-  transition:0.2s;
-  backdrop-filter: blur(10px);
-  box-shadow:0 0 25px rgba(0,255,200,0.15);
-  transform-style:preserve-3d;
 }
 
 .card:hover{
-  transform:rotateY(18deg) rotateX(12deg) scale(1.08);
-  box-shadow:0 0 35px #00ffd5;
+  transform:scale(1.05);
+  border:1px solid #7ffcff;
+  box-shadow:0 0 15px #7ffcff;
 }
 
 /* IMAGE */
@@ -68,27 +59,17 @@ header{
   width:80px;
   height:80px;
   border-radius:50%;
-  border:2px solid #00ffd5;
-  box-shadow:0 0 20px #00ffd5;
-  object-fit:cover;
-  transform:translateZ(40px);
+  border:2px solid #7ffcff;
 }
 
-/* TEXT */
-h3{
-  margin:10px 0 5px;
-  transform:translateZ(30px);
-}
-
+/* BADGE */
 .badge{
   display:inline-block;
+  margin-top:8px;
   padding:5px 10px;
-  background:rgba(0,255,213,0.15);
-  border:1px solid rgba(0,255,213,0.4);
-  color:#7fffd4;
-  border-radius:10px;
   font-size:12px;
-  transform:translateZ(20px);
+  border-radius:10px;
+  background:rgba(127,255,255,0.15);
 }
 
 /* MODAL */
@@ -98,41 +79,38 @@ h3{
   left:0;
   width:100%;
   height:100%;
+  background:rgba(0,0,0,0.85);
   display:none;
   justify-content:center;
   align-items:center;
-  background:rgba(0,0,0,0.85);
 }
 
 .modal-box{
-  background:rgba(10,10,20,0.9);
+  background:#0c1118;
   padding:20px;
   border-radius:15px;
-  border:1px solid #00ffd5;
+  border:1px solid #7ffcff;
   text-align:center;
-  box-shadow:0 0 40px #00ffd5;
 }
-
 button{
   margin-top:10px;
-  padding:8px 14px;
-  background:#00ffd5;
+  padding:8px 12px;
+  background:#7ffcff;
   border:none;
   cursor:pointer;
   font-weight:bold;
+  border-radius:5px;
 }
 </style>
 </head>
 
 <body>
 
-<header>⚡ MRZ MAX GRAPHICS CLAN ⚡</header>
-
-<canvas id="bg1"></canvas>
-<canvas id="bg2"></canvas>
+<header>🌌 MRZ SCROLL PRO MEMBERS 🌌</header>
 
 <div class="members-grid" id="grid"></div>
 
+<!-- MODAL -->
 <div id="modal">
   <div class="modal-box">
     <h3 id="mname"></h3>
@@ -144,96 +122,53 @@ button{
 
 <script>
 
-/* ===== PARTICLES (250+ HIGH DENSITY) ===== */
-const c1=document.getElementById("bg1");
-const ctx1=c1.getContext("2d");
+/* ===== SCROLL THEME SYSTEM ===== */
+window.addEventListener("scroll", () => {
+  let y = window.scrollY;
 
-c1.width=window.innerWidth;
-c1.height=window.innerHeight;
-
-let particles=[];
-
-for(let i=0;i<250;i++){
-  particles.push({
-    x:Math.random()*c1.width,
-    y:Math.random()*c1.height,
-    r:Math.random()*2.2,
-    dx:(Math.random()-0.5)*1.2,
-    dy:(Math.random()-0.5)*1.2
-  });
-}
-
-function drawParticles(){
-  ctx1.clearRect(0,0,c1.width,c1.height);
-
-  particles.forEach(p=>{
-    p.x+=p.dx;
-    p.y+=p.dy;
-
-    if(p.x<0||p.x>c1.width)p.dx*=-1;
-    if(p.y<0||p.y>c1.height)p.dy*=-1;
-
-    ctx1.beginPath();
-    ctx1.arc(p.x,p.y,p.r,0,Math.PI*2);
-    ctx1.fillStyle="rgba(0,255,213,0.8)";
-    ctx1.fill();
-  });
-
-  requestAnimationFrame(drawParticles);
-}
-drawParticles();
-
-/* ===== AURORA WAVES LAYER ===== */
-const c2=document.getElementById("bg2");
-const ctx2=c2.getContext("2d");
-
-c2.width=window.innerWidth;
-c2.height=window.innerHeight;
-
-let t=0;
-
-function aurora(){
-  ctx2.clearRect(0,0,c2.width,c2.height);
-
-  let g=ctx2.createLinearGradient(0,0,c2.width,c2.height);
-  g.addColorStop(0,"#00ffd5");
-  g.addColorStop(0.5,"#7a5cff");
-  g.addColorStop(1,"#00ff9d");
-
-  ctx2.globalAlpha=0.08;
-  ctx2.fillStyle=g;
-
-  for(let i=0;i<6;i++){
-    ctx2.beginPath();
-    ctx2.ellipse(
-      c2.width/2 + Math.sin(t+i)*250,
-      c2.height/2 + Math.cos(t+i)*150,
-      500,220,0,0,Math.PI*2
-    );
-    ctx2.fill();
+  if (y < 400) {
+    document.body.style.background = "#05060a"; // Aurora dark
+  } 
+  else if (y < 900) {
+    document.body.style.background = "#001b3d"; // Blue
+  } 
+  else if (y < 1400) {
+    document.body.style.background = "#120018"; // Purple
+  } 
+  else {
+    document.body.style.background = "#000000"; // Deep black neon
   }
+});
 
-  t+=0.008;
-  requestAnimationFrame(aurora);
-}
-aurora();
-
-/* ===== MEMBERS ===== */
-const members=[
+/* ===== ALL MEMBERS ===== */
+const members = [
 {name:"Mrz Thoppi",role:"God Father",image:"https://i.postimg.cc/7LPXhncP/Screenshot-20260524-145928-Instagram.png"},
 {name:"Mrz Rambo",role:"Leader",image:"https://i.postimg.cc/pTCmTKwX/Screenshot-20260527-185749-Instagram.png"},
 {name:"Mrz Sheik",role:"Co Leader",image:"https://i.postimg.cc/pLk8ybKM/Screenshot-20260527-185803-Instagram.png"},
 {name:"Mrz Mack",role:"Co Leader",image:"https://i.postimg.cc/mDnykffZ/Screenshot-20260527-191534-Instagram.png"},
 {name:"Mrz Appapan",role:"Member",image:"https://i.postimg.cc/kXWMTQ5D/Screenshot-20260527-192458-Instagram.png"},
 {name:"Mrz Bilal",role:"Member",image:"https://i.postimg.cc/L8RPD6mZ/Screenshot-20260527-193149-Instagram.png"},
-{name:"Mrz Raju Bhai",role:"Member",image:"https://i.postimg.cc/MpyDZFpj/Screenshot-20260527-194203-Instagram.png"}
+{name:"Mrz Raju Bhai",role:"Member",image:"https://i.postimg.cc/MpyDZFpj/Screenshot-20260527-194203-Instagram.png"},
+{name:"Mrz Kurup Denny",role:"Member",image:"https://i.postimg.cc/m2840S0M/Screenshot-20260527-202248-Instagram.png"},
+{name:"Mrz Fluffy",role:"Member",image:"https://i.postimg.cc/J7d3hwV3/Screenshot-20260527-204830-Instagram.png"},
+{name:"Mrz CK Mari",role:"Member",image:"https://i.postimg.cc/NfdRzWDV/Screenshot-20260527-205651-Instagram.png"},
+{name:"Mrz Malik",role:"Member",image:"https://i.postimg.cc/jqpjdv57/Screenshot-20260527-210418-Instagram.png"},
+{name:"Mrz Falcon",role:"Member",image:"https://i.postimg.cc/j5rW2bRC/Screenshot-20260527-212914-Instagram.png"},
+{name:"Mrz DNL",role:"Member",image:"https://i.postimg.cc/FHrX9ntm/Screenshot-20260527-213517-Instagram.png"},
+{name:"Mrz Amban Pro",role:"Member",image:"https://i.postimg.cc/jjv5xJ3x/Screenshot-20260527-214523-Instagram.png"},
+{name:"Mrz Charan",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Joshua",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Takai",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Speedo",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Pranav",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Bruce",role:"Member",image:"https://via.placeholder.com/100"}
 ];
 
 const grid=document.getElementById("grid");
 
+/* ===== SHOW MEMBERS ===== */
 function show(){
   grid.innerHTML="";
-
   members.forEach(m=>{
     let div=document.createElement("div");
     div.className="card";
@@ -244,25 +179,13 @@ function show(){
       <div class="badge">${m.role}</div>
     `;
 
-    /* HEAVY 3D TILT */
-    div.addEventListener("mousemove",(e)=>{
-      let x=(e.offsetX/div.clientWidth)*25-12;
-      let y=(e.offsetY/div.clientHeight)*25-12;
-      div.style.transform=`rotateY(${x}deg) rotateX(${-y}deg) scale(1.05)`;
-    });
-
-    div.addEventListener("mouseleave",()=>{
-      div.style.transform="rotateY(0deg) rotateX(0deg)";
-    });
-
     div.onclick=()=>openModal(m);
-
     grid.appendChild(div);
   });
 }
 show();
 
-/* MODAL */
+/* ===== MODAL ===== */
 function openModal(m){
   document.getElementById("modal").style.display="flex";
   document.getElementById("mname").innerText=m.name;
