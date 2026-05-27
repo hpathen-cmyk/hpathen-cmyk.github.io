@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRZ 3D Scroll Rotation</title>
+<title>MRZ Active 3D Pro</title>
 
 <style>
 body{
@@ -14,7 +14,6 @@ body{
   overflow:hidden;
 }
 
-/* BACKGROUND */
 .bg{
   position:fixed;
   width:100%;
@@ -23,11 +22,10 @@ body{
   z-index:-1;
 }
 
-/* HEADER */
 header{
   text-align:center;
-  padding:15px;
-  font-size:22px;
+  padding:12px;
+  font-size:20px;
   color:#7ffcff;
   background:rgba(0,0,0,0.4);
   backdrop-filter:blur(10px);
@@ -35,15 +33,13 @@ header{
 
 /* SCENE */
 .scene{
-  width:100%;
-  height:100vh;
+  height:75vh;
   display:flex;
   justify-content:center;
   align-items:center;
   perspective:1200px;
 }
 
-/* ROTATOR */
 .carousel{
   width:250px;
   height:350px;
@@ -64,11 +60,15 @@ header{
   text-align:center;
   padding:10px;
   backdrop-filter:blur(10px);
-  transition:0.3s;
+  transition:0.4s;
+  opacity:0.5;
+  transform:scale(0.85);
 }
 
-.card:hover{
-  box-shadow:0 0 20px #7ffcff;
+.card.active{
+  opacity:1;
+  transform:scale(1.15);
+  box-shadow:0 0 25px #7ffcff;
 }
 
 .avatar{
@@ -86,22 +86,57 @@ header{
   display:inline-block;
   background:rgba(127,255,255,0.15);
 }
+
+/* BOTTOM BAR */
+.bar{
+  position:fixed;
+  bottom:0;
+  width:100%;
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  padding:10px;
+  background:rgba(0,0,0,0.6);
+  backdrop-filter:blur(10px);
+}
+
+.bar-item{
+  width:60px;
+  height:60px;
+  border-radius:50%;
+  overflow:hidden;
+  border:2px solid transparent;
+  cursor:pointer;
+  transition:0.3s;
+  flex:0 0 auto;
+}
+
+.bar-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.bar-item.active{
+  border:2px solid #7ffcff;
+  transform:scale(1.2);
+}
 </style>
 </head>
 
 <body>
 
 <div class="bg"></div>
-
-<header>🔄 MRZ 3D SCROLL ROTATION</header>
+<header>⭐ MRZ ACTIVE 3D PRO ⭐</header>
 
 <div class="scene">
   <div class="carousel" id="carousel"></div>
 </div>
 
+<div class="bar" id="bar"></div>
+
 <script>
 
-/* ===== MEMBERS ===== */
 const members=[
 {name:"Mrz Thoppi",role:"God Father",image:"https://i.postimg.cc/7LPXhncP/Screenshot-20260524-145928-Instagram.png"},
 {name:"Mrz Rambo",role:"Leader",image:"https://i.postimg.cc/pTCmTKwX/Screenshot-20260527-185749-Instagram.png"},
@@ -114,15 +149,19 @@ const members=[
 ];
 
 const carousel=document.getElementById("carousel");
+const bar=document.getElementById("bar");
 
-let angle = 0;
-const step = 360 / members.length;
+let angle=0;
+let activeIndex=0;
+const step=360/members.length;
 
-/* BUILD CARDS */
+/* CREATE 3D CARDS */
+const cards=[];
+
 members.forEach((m,i)=>{
+
   let div=document.createElement("div");
   div.className="card";
-
   div.style.transform=`rotateY(${i*step}deg) translateZ(300px)`;
 
   div.innerHTML=`
@@ -132,51 +171,53 @@ members.forEach((m,i)=>{
   `;
 
   carousel.appendChild(div);
+  cards.push(div);
+
+  let b=document.createElement("div");
+  b.className="bar-item";
+
+  b.innerHTML=`<img src="${m.image}">`;
+
+  b.onclick=()=>{
+    activeIndex=i;
+    angle = -i * step;
+    updateActive();
+  };
+
+  bar.appendChild(b);
 });
 
-/* ===== SMOOTH RENDER LOOP ===== */
+/* ACTIVE UPDATE */
+function updateActive(){
+  cards.forEach((c,i)=>{
+    c.classList.toggle("active", i===activeIndex);
+  });
+
+  document.querySelectorAll(".bar-item").forEach((b,i)=>{
+    b.classList.toggle("active", i===activeIndex);
+  });
+}
+
+/* AUTO ROTATION */
 function animate(){
-  carousel.style.transform = `rotateY(${angle}deg)`;
+  angle += 0.2;
+  carousel.style.transform=`rotateY(${angle}deg)`;
+
+  activeIndex = Math.round((-angle / step)) % members.length;
+  if(activeIndex < 0) activeIndex += members.length;
+
+  updateActive();
+
   requestAnimationFrame(animate);
 }
 animate();
 
-/* ===== SCROLL CONTROL ===== */
+/* SCROLL CONTROL */
 window.addEventListener("wheel",(e)=>{
   angle += e.deltaY * 0.2;
-});
-
-/* ===== TOUCH / DRAG CONTROL ===== */
-let isDown=false;
-let startX=0;
-
-document.addEventListener("mousedown",(e)=>{
-  isDown=true;
-  startX=e.clientX;
-});
-
-document.addEventListener("mouseup",()=>isDown=false);
-
-document.addEventListener("mousemove",(e)=>{
-  if(!isDown) return;
-
-  let diff = e.clientX - startX;
-  angle += diff * 0.3;
-  startX = e.clientX;
-});
-
-/* MOBILE TOUCH */
-document.addEventListener("touchstart",(e)=>{
-  startX = e.touches[0].clientX;
-});
-
-document.addEventListener("touchmove",(e)=>{
-  let diff = e.touches[0].clientX - startX;
-  angle += diff * 0.3;
-  startX = e.touches[0].clientX;
 });
 
 </script>
 
 </body>
-</html>
+  </html>
