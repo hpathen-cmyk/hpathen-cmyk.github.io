@@ -3,166 +3,160 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRZ Active 3D Pro</title>
+<title>MRZ Galaxy Parallax Pro</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#05060a;
+  background:#000;
   color:white;
-  overflow:hidden;
+  overflow-x:hidden;
 }
 
-.bg{
+/* 🌌 GALAXY LAYERS */
+.layer{
   position:fixed;
-  width:100%;
-  height:100%;
-  background:radial-gradient(circle at center,#1a2b4f,#05060a);
+  width:200%;
+  height:200%;
+  background:
+    radial-gradient(circle at 20% 20%, #1a2b4f, transparent),
+    radial-gradient(circle at 80% 80%, #3a1b4f, transparent),
+    radial-gradient(circle at center, #000, #000);
+  z-index:-2;
+}
+
+.stars{
+  position:fixed;
+  width:200%;
+  height:200%;
+  background:radial-gradient(white 1px, transparent 1px);
+  background-size:60px 60px;
+  opacity:0.12;
   z-index:-1;
 }
 
-header{
+/* 🚀 LOGO */
+.logo{
   text-align:center;
-  padding:12px;
-  font-size:20px;
+  font-size:40px;
+  font-weight:bold;
+  margin-top:25px;
   color:#7ffcff;
-  background:rgba(0,0,0,0.4);
-  backdrop-filter:blur(10px);
+  letter-spacing:4px;
+  animation:float 3s ease-in-out infinite, glow 2s infinite alternate;
 }
 
-/* SCENE */
-.scene{
-  height:75vh;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  perspective:1200px;
+@keyframes float{
+  0%{transform:translateY(0px);}
+  50%{transform:translateY(-10px);}
+  100%{transform:translateY(0px);}
 }
 
-.carousel{
-  width:250px;
-  height:350px;
-  position:relative;
-  transform-style:preserve-3d;
+@keyframes glow{
+  from{ text-shadow:0 0 10px #7ffcff; }
+  to{ text-shadow:0 0 30px #7ffcff, 0 0 50px #3aa7ff; }
+}
+
+.sub{
+  text-align:center;
+  color:#aaa;
+  margin-bottom:20px;
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:15px;
+  padding:20px;
 }
 
 /* CARD */
 .card{
-  position:absolute;
-  width:180px;
-  height:240px;
-  left:35px;
-  top:55px;
-  background:rgba(255,255,255,0.06);
-  border:1px solid rgba(127,255,255,0.25);
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(127,255,255,0.15);
   border-radius:15px;
+  padding:15px;
   text-align:center;
-  padding:10px;
   backdrop-filter:blur(10px);
   transition:0.4s;
-  opacity:0.5;
-  transform:scale(0.85);
 }
 
-.card.active{
-  opacity:1;
-  transform:scale(1.15);
-  box-shadow:0 0 25px #7ffcff;
+.card:hover{
+  transform:translateY(-8px) scale(1.03);
+  box-shadow:0 0 25px rgba(127,255,255,0.3);
 }
 
 .avatar{
-  width:75px;
-  height:75px;
+  width:80px;
+  height:80px;
   border-radius:50%;
   border:2px solid #7ffcff;
 }
 
 .badge{
-  margin-top:6px;
-  font-size:12px;
-  padding:4px 8px;
-  border-radius:10px;
+  margin-top:8px;
   display:inline-block;
+  padding:5px 10px;
+  font-size:12px;
+  border-radius:10px;
   background:rgba(127,255,255,0.15);
-}
-
-/* BOTTOM BAR */
-.bar{
-  position:fixed;
-  bottom:0;
-  width:100%;
-  display:flex;
-  overflow-x:auto;
-  gap:10px;
-  padding:10px;
-  background:rgba(0,0,0,0.6);
-  backdrop-filter:blur(10px);
-}
-
-.bar-item{
-  width:60px;
-  height:60px;
-  border-radius:50%;
-  overflow:hidden;
-  border:2px solid transparent;
-  cursor:pointer;
-  transition:0.3s;
-  flex:0 0 auto;
-}
-
-.bar-item img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-}
-
-.bar-item.active{
-  border:2px solid #7ffcff;
-  transform:scale(1.2);
 }
 </style>
 </head>
 
 <body>
 
-<div class="bg"></div>
-<header>⭐ MRZ ACTIVE 3D PRO ⭐</header>
+<div class="layer" id="layer"></div>
+<div class="stars" id="stars"></div>
 
-<div class="scene">
-  <div class="carousel" id="carousel"></div>
-</div>
+<div class="logo">🚀 MRZ OFFICIAL</div>
+<div class="sub">Galaxy Clan Universe</div>
 
-<div class="bar" id="bar"></div>
+<div class="grid" id="grid"></div>
 
 <script>
 
-const members=[
+const members = [
 {name:"Mrz Thoppi",role:"God Father",image:"https://i.postimg.cc/7LPXhncP/Screenshot-20260524-145928-Instagram.png"},
 {name:"Mrz Rambo",role:"Leader",image:"https://i.postimg.cc/pTCmTKwX/Screenshot-20260527-185749-Instagram.png"},
 {name:"Mrz Sheik",role:"Co Leader",image:"https://i.postimg.cc/pLk8ybKM/Screenshot-20260527-185803-Instagram.png"},
 {name:"Mrz Mack",role:"Co Leader",image:"https://i.postimg.cc/mDnykffZ/Screenshot-20260527-191534-Instagram.png"},
+
 {name:"Mrz Appapan",role:"Member",image:"https://i.postimg.cc/kXWMTQ5D/Screenshot-20260527-192458-Instagram.png"},
 {name:"Mrz Bilal",role:"Member",image:"https://i.postimg.cc/L8RPD6mZ/Screenshot-20260527-193149-Instagram.png"},
 {name:"Mrz Raju Bhai",role:"Member",image:"https://i.postimg.cc/MpyDZFpj/Screenshot-20260527-194203-Instagram.png"},
-{name:"Mrz Falcon",role:"Member",image:"https://i.postimg.cc/j5rW2bRC/Screenshot-20260527-212914-Instagram.png"}
+{name:"Mrz Kurup Denny",role:"Member",image:"https://i.postimg.cc/m2840S0M/Screenshot-20260527-202248-Instagram.png"},
+{name:"Mrz Fluffy",role:"Member",image:"https://i.postimg.cc/J7d3hwV3/Screenshot-20260527-204830-Instagram.png"},
+{name:"Mrz CK Mari",role:"Member",image:"https://i.postimg.cc/NfdRzWDV/Screenshot-20260527-205651-Instagram.png"},
+{name:"Mrz Malik",role:"Member",image:"https://i.postimg.cc/jqpjdv57/Screenshot-20260527-210418-Instagram.png"},
+{name:"Mrz Zendex Duvor",role:"Member",image:"https://i.postimg.cc/zGJRS5hN/Screenshot-20260527-211506-Instagram.png"},
+{name:"Mrz Alex Duvor",role:"Member",image:"https://i.postimg.cc/mryXpTX8/Screenshot-20260527-212120-Instagram.png"},
+{name:"Mrz Falcon",role:"Member",image:"https://i.postimg.cc/j5rW2bRC/Screenshot-20260527-212914-Instagram.png"},
+{name:"Mrz DNL",role:"Member",image:"https://i.postimg.cc/FHrX9ntm/Screenshot-20260527-213517-Instagram.png"},
+{name:"Mrz Amban Pro",role:"Member",image:"https://i.postimg.cc/jjv5xJ3x/Screenshot-20260527-214523-Instagram.png"},
+
+{name:"Mrz Charan",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Joshua",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Takai",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Speedo",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Pranav",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Bruce",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Charlie",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Alan",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Usman",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Blake",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Ismail",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Shibu",role:"Member",image:"https://via.placeholder.com/100"},
+{name:"Mrz Minnal",role:"Member",image:"https://via.placeholder.com/100"}
 ];
 
-const carousel=document.getElementById("carousel");
-const bar=document.getElementById("bar");
+const grid=document.getElementById("grid");
 
-let angle=0;
-let activeIndex=0;
-const step=360/members.length;
-
-/* CREATE 3D CARDS */
-const cards=[];
-
-members.forEach((m,i)=>{
-
+members.forEach(m=>{
   let div=document.createElement("div");
   div.className="card";
-  div.style.transform=`rotateY(${i*step}deg) translateZ(300px)`;
 
   div.innerHTML=`
     <img class="avatar" src="${m.image}">
@@ -170,54 +164,21 @@ members.forEach((m,i)=>{
     <div class="badge">${m.role}</div>
   `;
 
-  carousel.appendChild(div);
-  cards.push(div);
-
-  let b=document.createElement("div");
-  b.className="bar-item";
-
-  b.innerHTML=`<img src="${m.image}">`;
-
-  b.onclick=()=>{
-    activeIndex=i;
-    angle = -i * step;
-    updateActive();
-  };
-
-  bar.appendChild(b);
+  grid.appendChild(div);
 });
 
-/* ACTIVE UPDATE */
-function updateActive(){
-  cards.forEach((c,i)=>{
-    c.classList.toggle("active", i===activeIndex);
-  });
+/* 🌌 PARALLAX EFFECT */
+window.addEventListener("scroll",()=>{
+  let y = window.scrollY;
 
-  document.querySelectorAll(".bar-item").forEach((b,i)=>{
-    b.classList.toggle("active", i===activeIndex);
-  });
-}
+  document.getElementById("layer").style.transform =
+    `translateY(${y * 0.2}px)`;
 
-/* AUTO ROTATION */
-function animate(){
-  angle += 0.2;
-  carousel.style.transform=`rotateY(${angle}deg)`;
-
-  activeIndex = Math.round((-angle / step)) % members.length;
-  if(activeIndex < 0) activeIndex += members.length;
-
-  updateActive();
-
-  requestAnimationFrame(animate);
-}
-animate();
-
-/* SCROLL CONTROL */
-window.addEventListener("wheel",(e)=>{
-  angle += e.deltaY * 0.2;
+  document.getElementById("stars").style.transform =
+    `translateY(${y * 0.4}px)`;
 });
 
 </script>
 
 </body>
-  </html>
+</html>
