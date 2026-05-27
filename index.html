@@ -1,6 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>MRZ Official</title>
@@ -148,52 +145,3 @@ btn.addEventListener("click", () => {
   } else {
     btn.innerText = "Join Team";
   }
-});
-
-// Members
-const members = [
-{
-  name:"Mrz thoppi",
-  role:"God Father",
-  img:"./images/thoppi.jpg"
-},
-{
-  name:"Mrz rambo",
-  role:"Leader",
-  img:"./images/default.jpg"
-},
-{
-  name:"Mrz sheik",
-  role:"Co Leader",
-  img:"./images/default.jpg"
-},
-{
-  name:"Mrz mack",
-  role:"Co Leader",
-  img:"./images/default.jpg"
-}
-];
-
-// Show members
-const grid = document.getElementById("membersGrid");
-
-members.forEach(member => {
-
-  const card = document.createElement("div");
-  card.className = "card";
-
-  card.innerHTML = `
-    <img src="${member.img}" class="avatar">
-    <h3>${member.name}</h3>
-    <div class="badge">${member.role}</div>
-    <p>Instagram | Discord</p>
-  `;
-
-  grid.appendChild(card);
-
-});
-
-</script>
-
-</body>
-</html>
