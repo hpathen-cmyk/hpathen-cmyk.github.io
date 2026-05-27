@@ -3,117 +3,122 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRZ Framer Pro</title>
+<title>MRZ Real Pro Framer</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background:#070A12;
+  background:#05070f;
   color:white;
   overflow-x:hidden;
 }
 
-/* BACKGROUND GRADIENT */
+/* ===== BACKGROUND LAYERS ===== */
 .bg{
   position:fixed;
   top:0;
   left:0;
   width:100%;
   height:100%;
-  background:radial-gradient(circle at top,#1b2a4a,#070A12);
-  z-index:-1;
+  background:radial-gradient(circle at 20% 20%, #1a2b4f, transparent),
+             radial-gradient(circle at 80% 80%, #3a1b4f, transparent),
+             #05070f;
+  z-index:-2;
   transition:1s ease;
+}
+
+/* CURSOR GLOW */
+.cursor{
+  position:fixed;
+  width:200px;
+  height:200px;
+  border-radius:50%;
+  background:rgba(0,255,255,0.15);
+  filter:blur(80px);
+  pointer-events:none;
+  transform:translate(-50%,-50%);
+  z-index:-1;
 }
 
 /* HEADER */
 header{
   position:sticky;
   top:0;
-  text-align:center;
   padding:18px;
-  font-size:26px;
+  text-align:center;
+  font-size:24px;
   font-weight:bold;
   background:rgba(0,0,0,0.4);
-  backdrop-filter: blur(10px);
+  backdrop-filter: blur(12px);
   color:#7ffcff;
   z-index:10;
 }
 
-/* HERO SECTION */
+/* HERO */
 .hero{
   height:100vh;
   display:flex;
+  flex-direction:column;
   justify-content:center;
   align-items:center;
-  flex-direction:column;
   text-align:center;
 }
 
 .hero h1{
-  font-size:40px;
+  font-size:42px;
   color:#7ffcff;
+  transform:translateY(30px);
   opacity:0;
-  transform:translateY(40px);
   animation:fadeUp 1s forwards;
 }
 
 .hero p{
+  color:#aaa;
   opacity:0;
   animation:fadeUp 1s 0.3s forwards;
-  color:#aaa;
 }
 
 @keyframes fadeUp{
-  to{
-    opacity:1;
-    transform:translateY(0);
-  }
+  to{opacity:1;transform:translateY(0);}
 }
 
-/* MEMBERS SECTION */
+/* SECTION */
 .section{
-  padding:60px 20px;
-}
-
-.title{
-  text-align:center;
-  font-size:24px;
-  margin-bottom:20px;
-  color:#7ffcff;
+  padding:80px 20px;
 }
 
 /* GRID */
-.members-grid{
+.grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
   gap:15px;
+  perspective:1200px;
 }
 
-/* CARD (FRAMER STYLE) */
+/* CARD */
 .card{
   background:rgba(255,255,255,0.06);
-  border:1px solid rgba(127,255,255,0.3);
+  border:1px solid rgba(127,255,255,0.2);
   border-radius:15px;
   padding:15px;
   text-align:center;
-  backdrop-filter: blur(12px);
-  transition:0.5s ease;
-  transform:translateY(40px);
+  backdrop-filter:blur(12px);
+  transition:0.4s;
+  transform:translateY(60px) scale(0.95);
   opacity:0;
 }
 
 .card.show{
-  transform:translateY(0);
+  transform:translateY(0) scale(1);
   opacity:1;
 }
 
 .card:hover{
-  transform:scale(1.05);
-  box-shadow:0 0 20px #7ffcff;
+  transform:rotateX(10deg) rotateY(-10deg) scale(1.05);
+  box-shadow:0 0 25px #7ffcff;
 }
 
-/* IMAGE */
 .avatar{
   width:80px;
   height:80px;
@@ -121,7 +126,6 @@ header{
   border:2px solid #7ffcff;
 }
 
-/* BADGE */
 .badge{
   margin-top:8px;
   display:inline-block;
@@ -138,10 +142,10 @@ header{
   left:0;
   width:100%;
   height:100%;
-  background:rgba(0,0,0,0.85);
   display:none;
   justify-content:center;
   align-items:center;
+  background:rgba(0,0,0,0.85);
 }
 
 .modal-box{
@@ -151,14 +155,13 @@ header{
   border:1px solid #7ffcff;
   text-align:center;
 }
-
 button{
   margin-top:10px;
   padding:8px 12px;
   background:#7ffcff;
   border:none;
-  cursor:pointer;
   border-radius:5px;
+  cursor:pointer;
 }
 </style>
 </head>
@@ -166,22 +169,19 @@ button{
 <body>
 
 <div class="bg"></div>
+<div class="cursor" id="cursor"></div>
 
-<header>🌟 MRZ FRAMER PRO 🌟</header>
+<header>🌟 MRZ REAL PRO FRAMER 🌟</header>
 
-<!-- HERO -->
 <div class="hero">
-  <h1>MRZ OFFICIAL CLAN</h1>
-  <p>Scroll down to view members</p>
+  <h1>MRZ CLAN</h1>
+  <p>Scroll for cinematic experience</p>
 </div>
 
-<!-- MEMBERS -->
 <div class="section">
-  <div class="title">Members</div>
-  <div class="members-grid" id="grid"></div>
+  <div class="grid" id="grid"></div>
 </div>
 
-<!-- MODAL -->
 <div id="modal">
   <div class="modal-box">
     <h3 id="mname"></h3>
@@ -193,8 +193,16 @@ button{
 
 <script>
 
-/* ===== MEMBERS DATA (ALL INCLUDED) ===== */
-const members = [
+/* ===== CURSOR GLOW ===== */
+const cursor=document.getElementById("cursor");
+
+window.addEventListener("mousemove",(e)=>{
+  cursor.style.left=e.clientX+"px";
+  cursor.style.top=e.clientY+"px";
+});
+
+/* ===== MEMBERS ===== */
+const members=[
 {name:"Mrz Thoppi",role:"God Father",image:"https://i.postimg.cc/7LPXhncP/Screenshot-20260524-145928-Instagram.png"},
 {name:"Mrz Rambo",role:"Leader",image:"https://i.postimg.cc/pTCmTKwX/Screenshot-20260527-185749-Instagram.png"},
 {name:"Mrz Sheik",role:"Co Leader",image:"https://i.postimg.cc/pLk8ybKM/Screenshot-20260527-185803-Instagram.png"},
@@ -202,43 +210,31 @@ const members = [
 {name:"Mrz Appapan",role:"Member",image:"https://i.postimg.cc/kXWMTQ5D/Screenshot-20260527-192458-Instagram.png"},
 {name:"Mrz Bilal",role:"Member",image:"https://i.postimg.cc/L8RPD6mZ/Screenshot-20260527-193149-Instagram.png"},
 {name:"Mrz Raju Bhai",role:"Member",image:"https://i.postimg.cc/MpyDZFpj/Screenshot-20260527-194203-Instagram.png"},
-{name:"Mrz Kurup Denny",role:"Member",image:"https://i.postimg.cc/m2840S0M/Screenshot-20260527-202248-Instagram.png"},
-{name:"Mrz Fluffy",role:"Member",image:"https://i.postimg.cc/J7d3hwV3/Screenshot-20260527-204830-Instagram.png"},
-{name:"Mrz CK Mari",role:"Member",image:"https://i.postimg.cc/NfdRzWDV/Screenshot-20260527-205651-Instagram.png"},
-{name:"Mrz Malik",role:"Member",image:"https://i.postimg.cc/jqpjdv57/Screenshot-20260527-210418-Instagram.png"},
-{name:"Mrz Falcon",role:"Member",image:"https://i.postimg.cc/j5rW2bRC/Screenshot-20260527-212914-Instagram.png"},
-{name:"Mrz DNL",role:"Member",image:"https://i.postimg.cc/FHrX9ntm/Screenshot-20260527-213517-Instagram.png"},
-{name:"Mrz Amban Pro",role:"Member",image:"https://i.postimg.cc/jjv5xJ3x/Screenshot-20260527-214523-Instagram.png"}
+{name:"Mrz Falcon",role:"Member",image:"https://i.postimg.cc/j5rW2bRC/Screenshot-20260527-212914-Instagram.png"}
 ];
 
 const grid=document.getElementById("grid");
 
 /* ===== RENDER ===== */
-function show(){
-  grid.innerHTML="";
-  members.forEach(m=>{
-    let div=document.createElement("div");
-    div.className="card";
+members.forEach(m=>{
+  let div=document.createElement("div");
+  div.className="card";
 
-    div.innerHTML=`
-      <img class="avatar" src="${m.image}">
-      <h3>${m.name}</h3>
-      <div class="badge">${m.role}</div>
-    `;
+  div.innerHTML=`
+    <img class="avatar" src="${m.image}">
+    <h3>${m.name}</h3>
+    <div class="badge">${m.role}</div>
+  `;
 
-    div.onclick=()=>openModal(m);
-    grid.appendChild(div);
+  div.onclick=()=>openModal(m);
+  grid.appendChild(div);
+});
 
-    setTimeout(()=>div.classList.add("show"),100);
-  });
-}
-show();
-
-/* ===== SCROLL ANIMATION (FRAMER STYLE) ===== */
+/* ===== SCROLL ANIMATION ===== */
 window.addEventListener("scroll",()=>{
   document.querySelectorAll(".card").forEach(card=>{
     let top=card.getBoundingClientRect().top;
-    if(top<window.innerHeight-100){
+    if(top<window.innerHeight-80){
       card.classList.add("show");
     }
   });
