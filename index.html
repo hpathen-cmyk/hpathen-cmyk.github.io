@@ -3,15 +3,14 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>MRZ Official 3D</title>
+<title>MRZ Official</title>
 
 <style>
 body{
   margin:0;
   font-family:Arial;
-  background: radial-gradient(circle,#111,#000);
+  background:#0b0b0b;
   color:white;
-  overflow-x:hidden;
 }
 
 /* HEADER */
@@ -20,78 +19,51 @@ header{
   padding:20px;
   background:#111;
   color:gold;
-  font-size:28px;
+  font-size:26px;
   font-weight:bold;
-  letter-spacing:2px;
 }
 
-/* SEARCH */
-.search-box{
-  text-align:center;
-  padding:10px;
-}
-.search-box input{
-  width:80%;
-  max-width:300px;
-  padding:10px;
-  border-radius:10px;
-  border:none;
-  outline:none;
-}
-
-/* GRID WITH 3D EFFECT */
+/* GRID */
 .members-grid{
   display:grid;
   grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-  gap:20px;
+  gap:15px;
   padding:20px;
   perspective:1000px;
 }
 
-/* 3D CARD */
+/* CARD */
 .card{
-  background: linear-gradient(145deg,#1a1a1a,#0d0d0d);
+  background:#1a1a1a;
   border:1px solid gold;
   border-radius:15px;
   text-align:center;
   padding:15px;
-  transition:0.4s ease;
-  transform-style:preserve-3d;
-  box-shadow:0 10px 20px rgba(0,0,0,0.6);
   cursor:pointer;
-  position:relative;
+  transition:0.3s;
 }
 
-/* 3D HOVER EFFECT */
 .card:hover{
-  transform: rotateY(12deg) rotateX(10deg) scale(1.05);
-  box-shadow:0 0 25px gold;
+  transform:scale(1.05);
+  box-shadow:0 0 15px gold;
 }
 
-/* IMAGE FLOAT EFFECT */
 .avatar{
   width:80px;
   height:80px;
   border-radius:50%;
   border:2px solid gold;
   object-fit:cover;
-  transform:translateZ(30px);
-}
-
-/* TEXT POP OUT */
-.card h3{
-  transform:translateZ(25px);
-  margin:10px 0 5px;
 }
 
 .badge{
+  margin-top:8px;
   display:inline-block;
   padding:5px 10px;
   background:rgba(255,215,0,0.2);
   color:gold;
   border-radius:10px;
   font-size:12px;
-  transform:translateZ(20px);
 }
 
 /* MODAL */
@@ -114,15 +86,88 @@ header{
   text-align:center;
   border:1px solid gold;
   width:260px;
-  transform:scale(0.9);
-  animation:pop 0.3s forwards;
-}
-
-@keyframes pop{
-  to{transform:scale(1);}
 }
 
 .modal-box img{
   width:100px;
   height:100px;
-  border-radius:
+  border-radius:50%;
+  border:2px solid gold;
+}
+
+button{
+  margin-top:10px;
+  padding:6px 12px;
+  background:gold;
+  border:none;
+  cursor:pointer;
+}
+</style>
+</head>
+
+<body>
+
+<header>MRZ OFFICIAL MEMBERS</header>
+
+<div class="members-grid" id="grid"></div>
+
+<div id="modal">
+  <div class="modal-box">
+    <img id="mimg">
+    <h3 id="mname"></h3>
+    <div id="mrole" class="badge"></div>
+    <br>
+    <button onclick="closeModal()">Close</button>
+  </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function(){
+
+const members = [
+{name:"Mrz Thoppi",role:"God Father",image:"https://i.postimg.cc/7LPXhncP/Screenshot-20260524-145928-Instagram.png"},
+{name:"Mrz Rambo",role:"Leader",image:"https://i.postimg.cc/pTCmTKwX/Screenshot-20260527-185749-Instagram.png"},
+{name:"Mrz Sheik",role:"Co Leader",image:"https://i.postimg.cc/pLk8ybKM/Screenshot-20260527-185803-Instagram.png"},
+{name:"Mrz Mack",role:"Co Leader",image:"https://i.postimg.cc/mDnykffZ/Screenshot-20260527-191534-Instagram.png"},
+{name:"Mrz Appapan",role:"Member",image:"https://i.postimg.cc/kXWMTQ5D/Screenshot-20260527-192458-Instagram.png"},
+{name:"Mrz Bilal",role:"Member",image:"https://i.postimg.cc/L8RPD6mZ/Screenshot-20260527-193149-Instagram.png"},
+{name:"Mrz Raju Bhai",role:"Member",image:"https://i.postimg.cc/MpyDZFpj/Screenshot-20260527-194203-Instagram.png"}
+];
+
+const grid=document.getElementById("grid");
+
+function show(){
+  grid.innerHTML="";
+  members.forEach(m=>{
+    const div=document.createElement("div");
+    div.className="card";
+
+    div.innerHTML=`
+      <img class="avatar" src="${m.image}">
+      <h3>${m.name}</h3>
+      <div class="badge">${m.role}</div>
+    `;
+
+    div.onclick=()=>openModal(m);
+    grid.appendChild(div);
+  });
+}
+
+show();
+
+window.openModal=function(m){
+  document.getElementById("modal").style.display="flex";
+  document.getElementById("mimg").src=m.image;
+  document.getElementById("mname").innerText=m.name;
+  document.getElementById("mrole").innerText=m.role;
+}
+
+window.closeModal=function(){
+  document.getElementById("modal").style.display="none";
+}
+
+});
+</script>
+
+</body>
+</html>
