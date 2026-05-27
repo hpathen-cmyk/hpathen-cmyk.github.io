@@ -7,161 +7,53 @@
 
 <style>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Arial,sans-serif;
-}
-
 body{
-background:linear-gradient(135deg,#0f0f0f,#1a1a1a);
+margin:0;
+font-family:Arial;
+background:#0f0f0f;
 color:white;
-overflow-x:hidden;
 }
 
-/* HEADER */
 header{
-position:sticky;
-top:0;
-background:rgba(255,215,0,0.08);
-backdrop-filter:blur(14px);
-border-bottom:1px solid rgba(255,215,0,0.2);
-padding:15px 20px;
-z-index:1000;
-}
-
-.logo{
-text-align:center;
-color:gold;
-font-size:30px;
-font-weight:bold;
-}
-
-/* HERO */
-.hero{
-min-height:70vh;
-display:flex;
-justify-content:center;
-align-items:center;
 text-align:center;
 padding:20px;
-}
-
-.glass{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(14px);
-border:1px solid rgba(255,215,0,0.2);
-border-radius:25px;
-padding:30px;
-box-shadow:0 0 30px rgba(255,215,0,0.15);
-max-width:700px;
-width:100%;
-}
-
-.hero h1{
-font-size:3rem;
+background:#111;
 color:gold;
-}
-
-.hero p{
-margin-top:10px;
-color:#ddd;
-}
-
-.btn{
-margin-top:20px;
-padding:12px 25px;
-border:none;
-border-radius:30px;
-background:gold;
-color:black;
+font-size:28px;
 font-weight:bold;
-cursor:pointer;
-transition:0.3s;
 }
 
-.btn:hover{
-transform:scale(1.05);
-}
-
-.btn.active{
-background:limegreen;
-color:white;
-}
-
-/* SECTIONS */
-section{
-padding:70px 20px;
-}
-
-.section-title{
-text-align:center;
-color:gold;
-font-size:2rem;
-margin-bottom:30px;
-}
-
-/* MEMBERS GRID */
 .members-grid{
 display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-max-width:1300px;
-margin:auto;
-}
-
-/* CARD */
-.card{
-background:rgba(255,255,255,0.08);
-backdrop-filter:blur(12px);
-border-radius:20px;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
 padding:20px;
+}
+
+.card{
+background:#1a1a1a;
+border:1px solid gold;
+border-radius:15px;
 text-align:center;
-border:1px solid rgba(255,215,0,0.2);
-transition:0.3s;
+padding:15px;
 }
 
-.card:hover{
-transform:translateY(-8px);
-}
-
-/* AVATAR */
 .avatar{
-width:100px;
-height:100px;
+width:85px;
+height:85px;
 border-radius:50%;
-border:3px solid gold;
-background:#333;
+border:2px solid gold;
 object-fit:cover;
-margin:auto;
-display:block;
-margin-bottom:15px;
 }
 
-/* BADGE */
 .badge{
+margin-top:8px;
 display:inline-block;
-padding:6px 12px;
-margin-top:10px;
-border-radius:12px;
-font-size:13px;
+padding:5px 10px;
 background:rgba(255,215,0,0.2);
 color:gold;
-}
-
-/* FOOTER */
-footer{
-text-align:center;
-padding:30px;
-color:#aaa;
-}
-
-/* MOBILE */
-@media(max-width:600px){
-.hero h1{
-font-size:2.2rem;
-}
+border-radius:10px;
+font-size:12px;
 }
 
 </style>
@@ -169,119 +61,66 @@ font-size:2.2rem;
 
 <body>
 
-<header>
-<div class="logo">MRZ Official</div>
-</header>
+<header>MRZ OFFICIAL MEMBERS</header>
 
-<section class="hero">
-<div class="glass">
-<h1>Welcome to MRZ Official</h1>
-<p>Official Gaming Team</p>
-
-<button class="btn" id="joinBtn">Join Team</button>
-</div>
-</section>
-
-<section>
-<h2 class="section-title">About MRZ</h2>
-
-<div class="glass">
-<p>
-MRZ Official is a professional gaming community built for teamwork,
-skill, friendship, and entertainment.
-We unite passionate gamers together.
-</p>
-</div>
-</section>
-
-<section>
-<h2 class="section-title">Our Members</h2>
-<div class="members-grid" id="membersGrid"></div>
-</section>
-
-<footer>
-© 2026 MRZ Official
-</footer>
+<div class="members-grid" id="grid"></div>
 
 <script>
 
-// JOIN BUTTON
-const btn = document.getElementById("joinBtn");
-
-btn.addEventListener("click", () => {
-btn.classList.toggle("active");
-btn.innerText = btn.classList.contains("active")
-? "Joined ✔"
-: "Join Team";
-});
-
-// MEMBERS LIST
 const members = [
-"Mrz thoppi (God father)",
-"Mrz rambo (Leader)",
-"Mrz sheik (Co Leader)",
-"Mrz mack (Co Leader)",
-"Mrz appapan (Member)",
-"Mrz bilal (Member)",
-"Mrz Raju bhai (Member)",
-"Mrz kurup denny (Member)",
-"Mrz fluffy (Member)",
-"Mrz ck mari (Member)",
-"Mrz malik (Member)",
-"Mrz zendex duvor (Member)",
-"Mrz Alex duver (Member)",
-"Mrz falcon (Member)",
-"Mrz dnl (Member)",
-"Mrz Amban pro (Member)",
-"Mrz Charan (Member)",
-"Mrz the God (Member)",
-"Mrz Joshua (Member)",
-"Mrz takai (Member)",
-"Mrz sakai (Member)",
-"Mrz speedo (Member)",
-"Mrz ikkrumon (Member)",
-"Mrz pranav (Member)",
-"Mrz pappadam (Member)",
-"Mrz kidu (Member)",
-"Mrz Bruce (Member)",
-"Mrz jasi (Member)",
-"Mrz JJ (Member)",
-"Mrz Charlie (Member)",
-"Mrz kareemeen gwad (Member)",
-"Mrz chapz (Member)",
-"Mrz rozario (Member)",
-"Mrz Alan (Member)",
-"Mrz bull op (Member)",
-"Mrz usman (Member)",
-"Mrz Blake (Member)",
-"Mrz ismail (Member)",
-"Mrz minnal (Member)",
-"Mrz shibu (Member)",
-"Mrz bobby (Member)",
-"Mrz rayan (Member)",
-"Mrz Cooper (Member)"
+{
+name:"Mrz Thoppi",
+role:"God Father",
+image:"https://i.ibb.co/cc9R5Hrt/Screenshot-20260524-145928-Instagram.png"
+},
+{
+name:"Mrz Rambo",
+role:"Leader",
+image:"https://via.placeholder.com/100"
+},
+{
+name:"Mrz Sheik",
+role:"Co Leader",
+image:"https://via.placeholder.com/100"
+},
+{
+name:"Mrz Mack",
+role:"Co Leader",
+image:"https://via.placeholder.com/100"
+},
+{
+name:"Mrz Appapan",
+role:"Member",
+image:"https://via.placeholder.com/100"
+},
+{
+name:"Mrz Bilal",
+role:"Member",
+image:"https://via.placeholder.com/100"
+},
+{
+name:"Mrz Raju Bhai",
+role:"Member",
+image:"https://via.placeholder.com/100"
+},
+{
+name:"Mrz Kurup Denny",
+role:"Member",
+image:"https://via.placeholder.com/100"
+}
 ];
 
-// RENDER MEMBERS
-const grid = document.getElementById("membersGrid");
+const grid = document.getElementById("grid");
 
-members.forEach((name) => {
-
-let role = "Member";
-
-if (name.includes("God father")) role = "God Father";
-else if (name.includes("Co Leader")) role = "Co Leader";
-else if (name.includes("Leader")) role = "Leader";
+members.forEach(m => {
 
 const card = document.createElement("div");
 card.className = "card";
 
 card.innerHTML = `
-<h3>${name}</h3>
-
-<img class="avatar" src="https://via.placeholder.com/100?text=MRZ">
-
-<div class="badge">${role}</div>
+<img src="${m.image}" class="avatar">
+<h4>${m.name}</h4>
+<div class="badge">${m.role}</div>
 `;
 
 grid.appendChild(card);
