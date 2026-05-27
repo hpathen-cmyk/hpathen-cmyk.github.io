@@ -7,6 +7,7 @@
 
 <style>
 
+/* RESET */
 *{
 margin:0;
 padding:0;
@@ -20,6 +21,7 @@ color:white;
 overflow-x:hidden;
 }
 
+/* HEADER */
 header{
 position:sticky;
 top:0;
@@ -37,6 +39,7 @@ font-size:30px;
 font-weight:bold;
 }
 
+/* HERO */
 .hero{
 min-height:70vh;
 display:flex;
@@ -88,6 +91,7 @@ background:limegreen;
 color:white;
 }
 
+/* SECTIONS */
 section{
 padding:70px 20px;
 }
@@ -99,6 +103,7 @@ font-size:2rem;
 margin-bottom:30px;
 }
 
+/* MEMBERS GRID */
 .members-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -107,6 +112,7 @@ max-width:1300px;
 margin:auto;
 }
 
+/* CARD */
 .card{
 background:rgba(255,255,255,0.08);
 backdrop-filter:blur(12px);
@@ -121,6 +127,7 @@ transition:0.3s;
 transform:translateY(-8px);
 }
 
+/* AVATAR */
 .avatar{
 width:100px;
 height:100px;
@@ -133,6 +140,7 @@ display:block;
 margin-bottom:15px;
 }
 
+/* BADGE */
 .badge{
 display:inline-block;
 padding:6px 12px;
@@ -143,18 +151,18 @@ background:rgba(255,215,0,0.2);
 color:gold;
 }
 
+/* FOOTER */
 footer{
 text-align:center;
 padding:30px;
 color:#aaa;
 }
 
+/* MOBILE */
 @media(max-width:600px){
-
 .hero h1{
 font-size:2.2rem;
 }
-
 }
 
 </style>
@@ -167,49 +175,28 @@ font-size:2.2rem;
 </header>
 
 <section class="hero">
-
 <div class="glass">
-
 <h1>Welcome to MRZ Official</h1>
+<p>Official Gaming Team</p>
 
-<p>
-Official Gaming Team
-</p>
-
-<button class="btn" id="joinBtn">
-Join Team
-</button>
-
+<button class="btn" id="joinBtn">Join Team</button>
 </div>
-
 </section>
 
 <section>
-
-<h2 class="section-title">
-About MRZ
-</h2>
+<h2 class="section-title">About MRZ</h2>
 
 <div class="glass">
-
 <p>
 MRZ Official is a professional gaming community built for teamwork,
-skill, friendship, and entertainment.
-We unite passionate gamers together to create a powerful team.
+skill, friendship, and entertainment. We unite passionate gamers together.
 </p>
-
 </div>
-
 </section>
 
 <section>
-
-<h2 class="section-title">
-Our Members
-</h2>
-
+<h2 class="section-title">Our Members</h2>
 <div class="members-grid" id="membersGrid"></div>
-
 </section>
 
 <footer>
@@ -219,26 +206,17 @@ Our Members
 <script>
 
 // JOIN BUTTON
-
 const btn = document.getElementById("joinBtn");
 
-btn.addEventListener("click",()=>{
-
+btn.addEventListener("click", () => {
 btn.classList.toggle("active");
-
-btn.innerText =
-btn.classList.contains("active")
-?
-"Joined ✔"
-:
-"Join Team";
-
+btn.innerText = btn.classList.contains("active")
+? "Joined ✔"
+: "Join Team";
 });
 
-// MEMBERS
-
+// MEMBERS DATA
 const members = [
-
 "Mrz thoppi (God father)",
 "Mrz rambo (Leader)",
 "Mrz sheik (Co Leader)",
@@ -282,65 +260,59 @@ const members = [
 "Mrz bobby (Member)",
 "Mrz rayan (Member)",
 "Mrz Cooper (Member)"
-
 ];
 
 // RENDER MEMBERS
-
 const grid = document.getElementById("membersGrid");
 
-members.forEach((name,index)=>{
+members.forEach((name, index) => {
 
 let role = "Member";
 
-if(name.includes("God father")){
-role = "God Father";
-}
-else if(name.includes("Co Leader")){
-role = "Co Leader";
-}
-else if(name.includes("Leader")){
-role = "Leader";
-}
+if (name.includes("God father")) role = "God Father";
+else if (name.includes("Co Leader")) role = "Co Leader";
+else if (name.includes("Leader")) role = "Leader";
 
 const card = document.createElement("div");
-
 card.className = "card";
 
 card.innerHTML = `
-
-${
-index === 0
-?
-`
-<input type="file"
-accept="image/*"
-onchange="document.getElementById('photo${index}').src =
-window.URL.createObjectURL(this.files[0])">
-
-<br><br>
-
-<img id="photo${index}" class="avatar">
-`
-:
-`
-<div class="avatar"></div>
-`
-}
-
 <h3>${name}</h3>
 
-<div class="badge">
-${role}
+<div>
+${
+index === 0
+? `<input type="file" id="file${index}" accept="image/*">
+   <img id="photo${index}" class="avatar">`
+: `<img id="photo${index}" class="avatar">`
+}
 </div>
 
+<div class="badge">${role}</div>
 `;
 
 grid.appendChild(card);
+
+const img = card.querySelector(`#photo${index}`);
+
+// default avatar (FIX)
+img.src = "https://via.placeholder.com/100?text=MRZ";
+
+// upload only for first member
+if (index === 0) {
+const fileInput = card.querySelector(`#file${index}`);
+
+fileInput.addEventListener("change", function () {
+const file = this.files[0];
+if (!file) return;
+
+img.src = URL.createObjectURL(file);
+});
+}
 
 });
 
 </script>
 
 </body>
-  </html>
+</html>
