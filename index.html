@@ -10,77 +10,128 @@
     margin:0;
     padding:0;
     box-sizing:border-box;
-    font-family:Arial,sans-serif;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
 }
 
 body{
+    height:100vh;
     display:flex;
     justify-content:center;
     align-items:center;
-    height:100vh;
-    background:#111;
+    background:#0d1117;
     color:#fff;
+    overflow:hidden;
 }
 
-.container{
+body::before{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:
+    radial-gradient(circle at top,#1f293722 0%,transparent 45%),
+    radial-gradient(circle at bottom,#2563eb22 0%,transparent 45%);
+}
+
+.card{
+    position:relative;
+    width:350px;
+    padding:40px 30px;
+    background:#161b22;
+    border:1px solid #30363d;
+    border-radius:18px;
     text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.45);
+}
+
+.logo{
+    width:70px;
+    height:70px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:#2563eb;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:30px;
+    box-shadow:0 0 25px rgba(37,99,235,.4);
 }
 
 h1{
-    font-size:48px;
+    font-size:36px;
     margin-bottom:10px;
 }
 
 p{
-    color:#ccc;
-    margin-bottom:25px;
+    color:#9ca3af;
+    line-height:1.5;
+    margin-bottom:30px;
 }
 
 button{
-    padding:15px 40px;
-    font-size:20px;
+    width:100%;
+    padding:15px;
     border:none;
-    border-radius:10px;
+    border-radius:12px;
+    background:#2563eb;
+    color:#fff;
+    font-size:18px;
+    font-weight:600;
     cursor:pointer;
-    background:#00bfff;
-    color:white;
+    transition:.25s;
 }
 
 button:hover{
-    background:#0099cc;
+    background:#1d4ed8;
+}
+
+button:active{
+    transform:scale(.98);
+}
+
+.footer{
+    margin-top:25px;
+    font-size:13px;
+    color:#6b7280;
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-    <h1>Welcome</h1>
-    <p>Tap the button below</p>
+<div class="card">
 
-    <button id="openBtn">Open</button>
+<div class="logo">★</div>
+
+<h1>Welcome</h1>
+
+<p>
+Tap the button below to continue.
+</p>
+
+<button id="openBtn">
+Open
+</button>
+
+<div class="footer">
+Premium Dark Interface
+</div>
+
 </div>
 
 <audio id="sound" preload="auto">
-    <source src="sound.mp3" type="audio/mpeg">
-    Your browser does not support audio.
+<source src="sound.mp3" type="audio/mpeg">
 </audio>
 
 <script>
 const button = document.getElementById("openBtn");
 const sound = document.getElementById("sound");
 
-button.addEventListener("click", function () {
-    sound.pause();
-    sound.currentTime = 0;
-
-    sound.play()
-        .then(() => {
-            console.log("Audio playing");
-        })
-        .catch((err) => {
-            alert("Audio failed: " + err.message);
-            console.error(err);
-        });
+button.addEventListener("click", async () => {
+    try{
+        sound.currentTime = 0;
+        await sound.play();
+    }catch(err){
+        console.log(err);
+    }
 });
 </script>
 
