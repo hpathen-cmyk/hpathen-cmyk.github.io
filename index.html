@@ -1,29 +1,58 @@
-<button class="btn" onclick="document.getElementById('members').scrollIntoView()">View Members</button>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Welcome</title>
+
+<style>
+body{
+    margin:0;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    background:#111;
+    color:white;
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    text-align:center;
+}
+
+button{
+    margin-top:20px;
+    padding:12px 25px;
+    font-size:18px;
+    border:none;
+    border-radius:8px;
+    cursor:pointer;
+    background:#fff;
+    color:#000;
+}
+
+button:hover{
+    background:#ddd;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Welcome</h1>
+    <p>Click the button below.</p>
+
+    <button onclick="playSound()">Open</button>
+
+    <audio id="sound" src="sound.mp3"></audio>
 </div>
 
-<!-- ABOUT -->
-<section>
-  <h2>About MRZ</h2>
-  <p style="color:#aaa;max-width:700px;margin:auto;">
-    MRZ is a gaming clan focused on teamwork, leadership, and competitive spirit.
-    Built with strong members and a clean identity.
-  </p>
-</section>
-
-<!-- MEMBERS -->
-<section id="members">
-  <h2>Members</h2>
-  <div class="grid" id="grid"></div>
-</section>
-
-<!-- FOOTER -->
-<footer>
-  © MRZ Official Clan
-</footer>
-
 <script>
+function playSound() {
+    document.getElementById("sound").play();
+}
+</script>
 
-const members = [
-{name:"Mrz Thoppi",role:"God Father",image:"https://i.postimg.cc/7LPXhncP/Screenshot-20260524-145928-Instagram.png"},
-{name:"Mrz Rambo",role:"Leader",image:"https://i.postimg.cc/pTCmTKwX/Screenshot-20260527-185749-Instagram.png"},
-{name:"Mrz Sheik",role:"Co
+</body>
+</html>
