@@ -3,136 +3,248 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Welcome</title>
+<title>GTA VI — Access Portal</title>
 
 <style>
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
-body{
-    height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    background:#0d1117;
-    color:#fff;
-    overflow:hidden;
-}
-
-body::before{
-    content:"";
-    position:absolute;
-    inset:0;
+body {
+    min-height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
     background:
-    radial-gradient(circle at top,#1f293722 0%,transparent 45%),
-    radial-gradient(circle at bottom,#2563eb22 0%,transparent 45%);
+        linear-gradient(rgba(0,0,0,.58), rgba(0,0,0,.82)),
+        url("https://images.unsplash.com/photo-1519501025264-65ba15a82390?auto=format&fit=crop&w=2000&q=80")
+        center/cover fixed;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
-.card{
-    position:relative;
-    width:350px;
-    padding:40px 30px;
-    background:#161b22;
-    border:1px solid #30363d;
-    border-radius:18px;
-    text-align:center;
-    box-shadow:0 15px 40px rgba(0,0,0,.45);
+.card {
+    width: min(440px, 92%);
+    padding: 38px 30px;
+    background: rgba(12,12,12,.88);
+    border: 1px solid rgba(255,255,255,.15);
+    border-radius: 20px;
+    backdrop-filter: blur(15px);
+    box-shadow: 0 25px 80px rgba(0,0,0,.65);
+    text-align: center;
 }
 
-.logo{
-    width:70px;
-    height:70px;
-    margin:0 auto 20px;
-    border-radius:50%;
-    background:#2563eb;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:30px;
-    box-shadow:0 0 25px rgba(37,99,235,.4);
+.logo {
+    font-size: 42px;
+    font-weight: 900;
+    letter-spacing: 3px;
+    margin-bottom: 8px;
 }
 
-h1{
-    font-size:36px;
-    margin-bottom:10px;
+.subtitle {
+    color: #aaa;
+    margin-bottom: 30px;
 }
 
-p{
-    color:#9ca3af;
-    line-height:1.5;
-    margin-bottom:30px;
+input {
+    width: 100%;
+    padding: 15px;
+    margin: 8px 0;
+    border-radius: 10px;
+    border: 1px solid #444;
+    background: #171717;
+    color: white;
+    font-size: 15px;
+    outline: none;
 }
 
-button{
-    width:100%;
-    padding:15px;
-    border:none;
-    border-radius:12px;
-    background:#2563eb;
-    color:#fff;
-    font-size:18px;
-    font-weight:600;
-    cursor:pointer;
-    transition:.25s;
+input:focus {
+    border-color: #fff;
 }
 
-button:hover{
-    background:#1d4ed8;
+button {
+    width: 100%;
+    padding: 15px;
+    margin-top: 12px;
+    border: 0;
+    border-radius: 10px;
+    background: white;
+    color: black;
+    font-weight: 800;
+    cursor: pointer;
+    transition: .2s;
 }
 
-button:active{
-    transform:scale(.98);
+button:hover {
+    transform: translateY(-2px);
+    background: #ddd;
 }
 
-.footer{
-    margin-top:25px;
-    font-size:13px;
-    color:#6b7280;
+.error {
+    color: #ff5555;
+    margin-top: 12px;
+    display: none;
+}
+
+.hidden {
+    display: none;
+}
+
+.timer {
+    font-size: 34px;
+    font-weight: 800;
+    margin: 25px 0;
+}
+
+.small {
+    color: #888;
+    font-size: 12px;
+    line-height: 1.5;
 }
 </style>
 </head>
+
 <body>
 
 <div class="card">
 
-<div class="logo">★</div>
+    <!-- STEP 1 -->
+    <div id="codeStep">
+        <div class="logo">VI</div>
+        <div class="subtitle">Access Portal</div>
 
-<h1>Welcome</h1>
+        <input
+            id="accessCode"
+            type="text"
+            placeholder="Enter access code"
+            autocomplete="off"
+        >
 
-<p>
-Tap the button below to continue.
-</p>
+        <button onclick="checkCode()">CONTINUE</button>
 
-<button id="openBtn">
-Open
-</button>
+        <div id="error" class="error">
+            Invalid access code.
+        </div>
+    </div>
 
-<div class="footer">
-Premium Dark Interface
+    <!-- STEP 2 -->
+    <div id="emailStep" class="hidden">
+        <div class="logo">✓</div>
+        <div class="subtitle">Access code accepted</div>
+
+        <input
+            id="email"
+            type="email"
+            placeholder="Enter your email"
+        >
+
+        <button onclick="submitEmail()">CONTINUE</button>
+
+        <div id="emailError" class="error">
+            Please enter a valid email address.
+        </div>
+    </div>
+
+    <!-- STEP 3 -->
+    <div id="waitStep" class="hidden">
+        <div class="logo">24H</div>
+
+        <div class="subtitle">
+            Request received
+        </div>
+
+        <div class="timer" id="timer">
+            24:00:00
+        </div>
+
+        <p class="small">
+            Your access request is being processed.
+            Please return after the waiting period.
+        </p>
+    </div>
+
 </div>
-
-</div>
-
-<audio id="sound" preload="auto">
-<source src="sound.mp3" type="audio/mpeg">
-</audio>
 
 <script>
-const button = document.getElementById("openBtn");
-const sound = document.getElementById("sound");
 
-button.addEventListener("click", async () => {
-    try{
-        sound.currentTime = 0;
-        await sound.play();
-    }catch(err){
-        console.log(err);
+const CORRECT_CODE = "GYU4 8PXD YHPS";
+
+function checkCode() {
+
+    const entered =
+        document.getElementById("accessCode")
+        .value
+        .trim()
+        .toUpperCase();
+
+    if (entered === CORRECT_CODE) {
+
+        document.getElementById("codeStep")
+            .classList.add("hidden");
+
+        document.getElementById("emailStep")
+            .classList.remove("hidden");
+
+    } else {
+
+        document.getElementById("error")
+            .style.display = "block";
     }
-});
+}
+
+function submitEmail() {
+
+    const email =
+        document.getElementById("email").value.trim();
+
+    const valid =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+
+    if (!valid) {
+        document.getElementById("emailError")
+            .style.display = "block";
+        return;
+    }
+
+    document.getElementById("emailStep")
+        .classList.add("hidden");
+
+    document.getElementById("waitStep")
+        .classList.remove("hidden");
+
+    startTimer();
+}
+
+function startTimer() {
+
+    let seconds = 24 * 60 * 60;
+
+    setInterval(() => {
+
+        if (seconds <= 0) return;
+
+        seconds--;
+
+        const h =
+            String(Math.floor(seconds / 3600))
+            .padStart(2, "0");
+
+        const m =
+            String(Math.floor((seconds % 3600) / 60))
+            .padStart(2, "0");
+
+        const s =
+            String(seconds % 60)
+            .padStart(2, "0");
+
+        document.getElementById("timer")
+            .textContent = `${h}:${m}:${s}`;
+
+    }, 1000);
+}
+
 </script>
 
 </body>
