@@ -3,396 +3,149 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MRZ Official</title>
-
-  <style>
-    /* ===== YOUR WEBSITE STYLES ===== */
-    body {
-      margin: 0;
-      background: #050505;
-      color: white;
-      font-family: Arial, sans-serif;
-    }
-
-    /* ===== AI BUTTON ===== */
-    #ai-chat-button {
-      position: fixed;
-      right: 20px;
-      bottom: 20px;
-      width: 60px;
-      height: 60px;
-      border: 0;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #ffd700, #ff9d00);
-      color: #111;
-      font-size: 25px;
-      cursor: pointer;
-      z-index: 99999;
-      box-shadow: 0 5px 25px rgba(255, 193, 7, .4);
-    }
-
-    /* ===== CHAT WINDOW ===== */
-    #ai-chat-box {
-      display: none;
-      position: fixed;
-      right: 20px;
-      bottom: 95px;
-      width: 380px;
-      height: 520px;
-      max-width: calc(100vw - 30px);
-      background: #0b0b0f;
-      border: 1px solid rgba(255, 215, 0, .35);
-      border-radius: 18px;
-      overflow: hidden;
-      z-index: 99998;
-      box-shadow: 0 15px 50px rgba(0,0,0,.7);
-    }
-
-    /* ===== HEADER ===== */
-    #ai-header {
-      height: 62px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 0 16px;
-      background: #111;
-      border-bottom: 1px solid rgba(255,215,0,.2);
-    }
-
-    #ai-title {
-      color: #ffd700;
-      font-size: 18px;
-      font-weight: bold;
-    }
-
-    #ai-status {
-      color: #777;
-      font-size: 11px;
-      margin-top: 3px;
-    }
-
-    #ai-close {
-      background: transparent;
-      border: 0;
-      color: #aaa;
-      font-size: 25px;
-      cursor: pointer;
-    }
-
-    /* ===== MESSAGES ===== */
-    #ai-messages {
-      height: calc(100% - 125px);
-      padding: 15px;
-      overflow-y: auto;
-      box-sizing: border-box;
-    }
-
-    .ai-message {
-      max-width: 82%;
-      padding: 10px 13px;
-      margin-bottom: 11px;
-      border-radius: 14px;
-      line-height: 1.45;
-      font-size: 14px;
-      word-break: break-word;
-    }
-
-    .ai-user {
-      margin-left: auto;
-      background: #ffd700;
-      color: #111;
-      border-bottom-right-radius: 4px;
-    }
-
-    .ai-bot {
-      margin-right: auto;
-      background: #19191f;
-      color: #eee;
-      border: 1px solid #292930;
-      border-bottom-left-radius: 4px;
-    }
-
-    /* ===== INPUT ===== */
-    #ai-input-area {
-      position: absolute;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      height: 63px;
-      display: flex;
-      gap: 8px;
-      padding: 10px;
-      box-sizing: border-box;
-      background: #101014;
-      border-top: 1px solid #292929;
-    }
-
-    #ai-input {
-      flex: 1;
-      min-width: 0;
-      border: 1px solid #333;
-      border-radius: 12px;
-      outline: none;
-      padding: 0 13px;
-      background: #18181d;
-      color: white;
-      font-size: 14px;
-    }
-
-    #ai-input:focus {
-      border-color: #ffd700;
-    }
-
-    #ai-send {
-      width: 50px;
-      border: 0;
-      border-radius: 12px;
-      background: #ffd700;
-      color: #111;
-      font-size: 18px;
-      cursor: pointer;
-    }
-
-    #ai-send:disabled {
-      opacity: .5;
-      cursor: not-allowed;
-    }
-
-    @media (max-width: 500px) {
-      #ai-chat-box {
-        right: 10px;
-        bottom: 85px;
-        width: calc(100vw - 20px);
-        height: 70vh;
-      }
-
-      #ai-chat-button {
-        right: 15px;
-        bottom: 15px;
-      }
-    }
-  </style>
+  <title>CYBER LEAK</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-  <!-- YOUR EXISTING WEBSITE CONTENT GOES HERE -->
+<div class="scanlines"></div>
 
+<div class="container">
 
-  <!-- ================= MRZ AI ================= -->
+  <div class="warning">⚠ CLASSIFIED ARCHIVE ⚠</div>
 
-  <button id="ai-chat-button">🤖</button>
+  <h1>CYBER LEAK</h1>
+  <p class="subtitle">SECURE DATA TERMINAL // ACCESS RESTRICTED</p>
 
-  <div id="ai-chat-box">
+  <div class="status">
+    <span class="dot"></span>
+    SYSTEM ONLINE
+  </div>
 
-    <div id="ai-header">
-      <div>
-        <div id="ai-title">MRZ AI</div>
-        <div id="ai-status">Gemini AI Assistant</div>
-      </div>
+  <!-- FILE 1 -->
+  <div class="file-card">
 
-      <button id="ai-close">×</button>
+    <div class="zip-icon purple">
+      <span>ZIP</span>
     </div>
 
-    <div id="ai-messages">
-
-      <div class="ai-message ai-bot">
-        👋 Hey! I'm MRZ AI.<br>
-        How can I help you?
-      </div>
-
+    <div class="file-info">
+      <h2>GTA_6_PS5.zip</h2>
+      <p>210.40 GB • 215,450 MB</p>
+      <span class="platform ps5">PlayStation 5</span>
     </div>
 
-    <div id="ai-input-area">
-
-      <input
-        id="ai-input"
-        type="text"
-        placeholder="Ask MRZ AI..."
-        autocomplete="off"
-      >
-
-      <button id="ai-send">➤</button>
-
-    </div>
+    <button onclick="openPassword('GTA_6_PS5.zip')">
+      DOWNLOAD
+    </button>
 
   </div>
 
 
-  <script>
+  <!-- FILE 2 -->
+  <div class="file-card">
 
-    const chatButton =
-      document.getElementById("ai-chat-button");
+    <div class="zip-icon green">
+      <span>ZIP</span>
+    </div>
 
-    const chatBox =
-      document.getElementById("ai-chat-box");
+    <div class="file-info">
+      <h2>GTA_6_Xbox_Series_S.zip</h2>
+      <p>176.30 GB • 180,531 MB</p>
+      <span class="platform xbox">Xbox Series S</span>
+    </div>
 
-    const closeButton =
-      document.getElementById("ai-close");
+    <button onclick="openPassword('GTA_6_Xbox_Series_S.zip')">
+      DOWNLOAD
+    </button>
 
-    const input =
-      document.getElementById("ai-input");
+  </div>
 
-    const sendButton =
-      document.getElementById("ai-send");
 
-    const messages =
-      document.getElementById("ai-messages");
+  <!-- FILE 3 -->
+  <div class="file-card">
 
+    <div class="zip-icon green">
+      <span>ZIP</span>
+    </div>
 
-    /* OPEN CHAT */
+    <div class="file-info">
+      <h2>GTA_6_Xbox_Series_X.zip</h2>
+      <p>198.70 GB • 203,469 MB</p>
+      <span class="platform xbox">Xbox Series X</span>
+    </div>
 
-    chatButton.onclick = function() {
+    <button onclick="openPassword('GTA_6_Xbox_Series_X.zip')">
+      DOWNLOAD
+    </button>
 
-      chatBox.style.display = "block";
+  </div>
 
-      input.focus();
 
-    };
+  <!-- FILE 4 -->
+  <div class="file-card">
 
+    <div class="zip-icon purple">
+      <span>ZIP</span>
+    </div>
 
-    /* CLOSE CHAT */
+    <div class="file-info">
+      <h2>GTA_6_PC.zip</h2>
+      <p>238.90 GB • 244,634 MB</p>
+      <span class="platform pc">PC</span>
+    </div>
 
-    closeButton.onclick = function() {
+    <button onclick="openPassword('GTA_6_PC.zip')">
+      DOWNLOAD
+    </button>
 
-      chatBox.style.display = "none";
+  </div>
 
-    };
 
+  <footer>
+    CYBER LEAK // FICTIONAL DEMO // 2026
+  </footer>
 
-    /* ADD MESSAGE */
+</div>
 
-    function addMessage(text, type) {
 
-      const message =
-        document.createElement("div");
+<!-- PASSWORD POPUP -->
 
-      message.className =
-        "ai-message " + type;
+<div id="passwordModal" class="modal">
 
-      message.textContent = text;
+  <div class="password-panel">
 
-      messages.appendChild(message);
+    <button class="close" onclick="closePassword()">×</button>
 
-      messages.scrollTop =
-        messages.scrollHeight;
+    <div class="lock">🔐</div>
 
-      return message;
+    <h2>ACCESS REQUIRED</h2>
 
-    }
+    <p id="selectedFile"></p>
 
+    <p class="hint">
+      Enter authorization password
+    </p>
 
-    /* SEND MESSAGE */
+    <input
+      id="passwordInput"
+      type="password"
+      placeholder="ENTER PASSWORD"
+      autocomplete="off"
+    >
 
-    async function sendMessage() {
+    <button class="unlock" onclick="checkPassword()">
+      UNLOCK ARCHIVE
+    </button>
 
-      const text =
-        input.value.trim();
+    <div id="passwordMessage"></div>
 
-      if (!text || sendButton.disabled)
-        return;
+  </div>
 
+</div>
 
-      /* USER MESSAGE */
-
-      addMessage(text, "ai-user");
-
-      input.value = "";
-
-      sendButton.disabled = true;
-
-
-      /* LOADING */
-
-      const loading =
-        addMessage("Thinking...", "ai-bot");
-
-
-      try {
-
-        /*
-         * YOUR SECURE CLOUDFLARE WORKER
-         * WILL GO HERE.
-         */
-
-        const response =
-          await fetch("YOUR_WORKER_URL", {
-
-            method: "POST",
-
-            headers: {
-              "Content-Type": "application/json"
-            },
-
-            body: JSON.stringify({
-              message: text
-            })
-
-          });
-
-
-        if (!response.ok) {
-
-          throw new Error(
-            "AI server error"
-          );
-
-        }
-
-
-        const data =
-          await response.json();
-
-
-        loading.remove();
-
-
-        addMessage(
-          data.reply ||
-          "I couldn't generate a response.",
-          "ai-bot"
-        );
-
-
-      } catch (error) {
-
-        console.error(error);
-
-        loading.textContent =
-          "⚠️ AI connection isn't configured yet.";
-
-      }
-
-
-      sendButton.disabled = false;
-
-      input.focus();
-
-    }
-
-
-    /* SEND BUTTON */
-
-    sendButton.onclick =
-      sendMessage;
-
-
-    /* ENTER KEY */
-
-    input.addEventListener(
-      "keydown",
-      function(event) {
-
-        if (event.key === "Enter") {
-
-          sendMessage();
-
-        }
-
-      }
-    );
-
-  </script>
+<script src="script.js"></script>
 
 </body>
 </html>
