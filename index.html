@@ -3,149 +3,454 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CYBER LEAK</title>
+
+  <title>CYBER LEAK // ARCHIVE</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
-<div class="scanlines"></div>
+  <div class="noise"></div>
+  <div class="grid"></div>
+  <div class="glow glow-1"></div>
+  <div class="glow glow-2"></div>
 
-<div class="container">
+  <header class="topbar">
 
-  <div class="warning">⚠ CLASSIFIED ARCHIVE ⚠</div>
-
-  <h1>CYBER LEAK</h1>
-  <p class="subtitle">SECURE DATA TERMINAL // ACCESS RESTRICTED</p>
-
-  <div class="status">
-    <span class="dot"></span>
-    SYSTEM ONLINE
-  </div>
-
-  <!-- FILE 1 -->
-  <div class="file-card">
-
-    <div class="zip-icon purple">
-      <span>ZIP</span>
+    <div class="brand">
+      <div class="brand-mark">C</div>
+      <div>
+        <strong>CYBER<span>LEAK</span></strong>
+        <small>PRIVATE ARCHIVE</small>
+      </div>
     </div>
 
-    <div class="file-info">
-      <h2>GTA_6_PS5.zip</h2>
-      <p>210.40 GB • 215,450 MB</p>
-      <span class="platform ps5">PlayStation 5</span>
+    <div class="connection">
+      <span class="pulse"></span>
+      SECURE CONNECTION
     </div>
 
-    <button onclick="openPassword('GTA_6_PS5.zip')">
-      DOWNLOAD
-    </button>
-
-  </div>
+  </header>
 
 
-  <!-- FILE 2 -->
-  <div class="file-card">
+  <main>
 
-    <div class="zip-icon green">
-      <span>ZIP</span>
-    </div>
+    <section class="hero">
 
-    <div class="file-info">
-      <h2>GTA_6_Xbox_Series_S.zip</h2>
-      <p>176.30 GB • 180,531 MB</p>
-      <span class="platform xbox">Xbox Series S</span>
-    </div>
+      <div class="eyebrow">
+        <span></span>
+        CLASSIFIED DIGITAL ARCHIVE
+      </div>
 
-    <button onclick="openPassword('GTA_6_Xbox_Series_S.zip')">
-      DOWNLOAD
-    </button>
+      <h1>
+        NEXT-GEN
+        <strong>GAME ARCHIVE</strong>
+      </h1>
 
-  </div>
+      <p>
+        Encrypted archive interface for a fictional cyber-security
+        demonstration.
+      </p>
+
+      <div class="hero-stats">
+
+        <div>
+          <strong>04</strong>
+          <span>ARCHIVES</span>
+        </div>
+
+        <div>
+          <strong>824 GB</strong>
+          <span>TOTAL DATA</span>
+        </div>
+
+        <div>
+          <strong>99.9%</strong>
+          <span>SYSTEM UPTIME</span>
+        </div>
+
+      </div>
+
+    </section>
 
 
-  <!-- FILE 3 -->
-  <div class="file-card">
+    <section class="terminal">
 
-    <div class="zip-icon green">
-      <span>ZIP</span>
-    </div>
+      <div class="terminal-head">
 
-    <div class="file-info">
-      <h2>GTA_6_Xbox_Series_X.zip</h2>
-      <p>198.70 GB • 203,469 MB</p>
-      <span class="platform xbox">Xbox Series X</span>
-    </div>
+        <div class="terminal-title">
+          <span class="terminal-icon">></span>
+          ARCHIVE TERMINAL
+        </div>
 
-    <button onclick="openPassword('GTA_6_Xbox_Series_X.zip')">
-      DOWNLOAD
-    </button>
+        <div class="terminal-status">
+          <span></span>
+          ONLINE
+        </div>
 
-  </div>
+      </div>
+
+      <div class="terminal-line">
+        <span>root@cyber-leak:~$</span>
+        scanning available archives...
+      </div>
+
+      <div class="terminal-line success">
+        ✓ 4 archive packages detected
+      </div>
+
+    </section>
 
 
-  <!-- FILE 4 -->
-  <div class="file-card">
+    <section class="archive-grid">
 
-    <div class="zip-icon purple">
-      <span>ZIP</span>
-    </div>
 
-    <div class="file-info">
-      <h2>GTA_6_PC.zip</h2>
-      <p>238.90 GB • 244,634 MB</p>
-      <span class="platform pc">PC</span>
-    </div>
+      <!-- PS5 -->
 
-    <button onclick="openPassword('GTA_6_PC.zip')">
-      DOWNLOAD
-    </button>
+      <article class="file-card">
 
-  </div>
+        <div class="card-top">
+
+          <div class="file-icon purple">
+            <span>ZIP</span>
+          </div>
+
+          <span class="availability">
+            AVAILABLE
+          </span>
+
+        </div>
+
+        <div class="file-content">
+
+          <div class="platform">
+            PLAYSTATION 5
+          </div>
+
+          <h2>GTA_6_PS5.zip</h2>
+
+          <p class="description">
+            Fictional archive package for demonstration purposes.
+          </p>
+
+          <div class="metadata">
+
+            <div>
+              <span>SIZE</span>
+              <strong>210.40 GB</strong>
+            </div>
+
+            <div>
+              <span>FORMAT</span>
+              <strong>ZIP</strong>
+            </div>
+
+          </div>
+
+          <div class="price-row">
+
+            <div>
+              <small>ARCHIVE ACCESS</small>
+              <strong>$29.99 <em>USD</em></strong>
+            </div>
+
+            <button onclick="openPassword('GTA_6_PS5.zip', '$29.99')">
+              ACCESS
+              <span>→</span>
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- XBOX S -->
+
+      <article class="file-card">
+
+        <div class="card-top">
+
+          <div class="file-icon green">
+            <span>ZIP</span>
+          </div>
+
+          <span class="availability">
+            AVAILABLE
+          </span>
+
+        </div>
+
+        <div class="file-content">
+
+          <div class="platform">
+            XBOX SERIES S
+          </div>
+
+          <h2>GTA_6_Xbox_Series_S.zip</h2>
+
+          <p class="description">
+            Fictional archive package for demonstration purposes.
+          </p>
+
+          <div class="metadata">
+
+            <div>
+              <span>SIZE</span>
+              <strong>176.30 GB</strong>
+            </div>
+
+            <div>
+              <span>FORMAT</span>
+              <strong>ZIP</strong>
+            </div>
+
+          </div>
+
+          <div class="price-row">
+
+            <div>
+              <small>ARCHIVE ACCESS</small>
+              <strong>$24.99 <em>USD</em></strong>
+            </div>
+
+            <button onclick="openPassword('GTA_6_Xbox_Series_S.zip', '$24.99')">
+              ACCESS
+              <span>→</span>
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- XBOX X -->
+
+      <article class="file-card">
+
+        <div class="card-top">
+
+          <div class="file-icon green">
+            <span>ZIP</span>
+          </div>
+
+          <span class="availability">
+            AVAILABLE
+          </span>
+
+        </div>
+
+        <div class="file-content">
+
+          <div class="platform">
+            XBOX SERIES X
+          </div>
+
+          <h2>GTA_6_Xbox_Series_X.zip</h2>
+
+          <p class="description">
+            Fictional archive package for demonstration purposes.
+          </p>
+
+          <div class="metadata">
+
+            <div>
+              <span>SIZE</span>
+              <strong>198.70 GB</strong>
+            </div>
+
+            <div>
+              <span>FORMAT</span>
+              <strong>ZIP</strong>
+            </div>
+
+          </div>
+
+          <div class="price-row">
+
+            <div>
+              <small>ARCHIVE ACCESS</small>
+              <strong>$27.99 <em>USD</em></strong>
+            </div>
+
+            <button onclick="openPassword('GTA_6_Xbox_Series_X.zip', '$27.99')">
+              ACCESS
+              <span>→</span>
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+
+      <!-- PC -->
+
+      <article class="file-card featured">
+
+        <div class="featured-label">
+          FEATURED
+        </div>
+
+        <div class="card-top">
+
+          <div class="file-icon gold">
+            <span>ZIP</span>
+          </div>
+
+          <span class="availability">
+            AVAILABLE
+          </span>
+
+        </div>
+
+        <div class="file-content">
+
+          <div class="platform">
+            PC / WINDOWS
+          </div>
+
+          <h2>GTA_6_PC.zip</h2>
+
+          <p class="description">
+            Fictional archive package for demonstration purposes.
+          </p>
+
+          <div class="metadata">
+
+            <div>
+              <span>SIZE</span>
+              <strong>238.90 GB</strong>
+            </div>
+
+            <div>
+              <span>FORMAT</span>
+              <strong>ZIP</strong>
+            </div>
+
+          </div>
+
+          <div class="price-row">
+
+            <div>
+              <small>ARCHIVE ACCESS</small>
+              <strong>$34.99 <em>USD</em></strong>
+            </div>
+
+            <button onclick="openPassword('GTA_6_PC.zip', '$34.99')">
+              ACCESS
+              <span>→</span>
+            </button>
+
+          </div>
+
+        </div>
+
+      </article>
+
+    </section>
+
+
+    <section class="security-panel">
+
+      <div class="security-icon">⌁</div>
+
+      <div>
+        <strong>SECURITY PROTOCOL ACTIVE</strong>
+        <p>
+          All archive entries shown on this page are fictional
+          demonstration interfaces.
+        </p>
+      </div>
+
+      <div class="encrypted">
+        AES-256<br>
+        ENCRYPTED
+      </div>
+
+    </section>
+
+  </main>
 
 
   <footer>
-    CYBER LEAK // FICTIONAL DEMO // 2026
+
+    <div>
+      CYBER LEAK © 2026
+    </div>
+
+    <div>
+      FICTIONAL DEMO • NO REAL FILES
+    </div>
+
   </footer>
 
-</div>
 
+  <!-- PASSWORD MODAL -->
 
-<!-- PASSWORD POPUP -->
+  <div id="passwordModal" class="modal">
 
-<div id="passwordModal" class="modal">
+    <div class="modal-backdrop" onclick="closePassword()"></div>
 
-  <div class="password-panel">
+    <div class="password-panel">
 
-    <button class="close" onclick="closePassword()">×</button>
+      <button class="close" onclick="closePassword()">×</button>
 
-    <div class="lock">🔐</div>
+      <div class="modal-lock">
+        🔐
+      </div>
 
-    <h2>ACCESS REQUIRED</h2>
+      <div class="modal-label">
+        AUTHENTICATION REQUIRED
+      </div>
 
-    <p id="selectedFile"></p>
+      <h2>ACCESS ARCHIVE</h2>
 
-    <p class="hint">
-      Enter authorization password
-    </p>
+      <p id="selectedFile">
+        FILE: GTA_6_PC.zip
+      </p>
 
-    <input
-      id="passwordInput"
-      type="password"
-      placeholder="ENTER PASSWORD"
-      autocomplete="off"
-    >
+      <div class="selected-price" id="selectedPrice">
+        $34.99 USD
+      </div>
 
-    <button class="unlock" onclick="checkPassword()">
-      UNLOCK ARCHIVE
-    </button>
+      <label>
+        AUTHORIZATION PASSWORD
+      </label>
 
-    <div id="passwordMessage"></div>
+      <input
+        id="passwordInput"
+        type="password"
+        placeholder="ENTER PASSWORD"
+        autocomplete="off"
+      >
+
+      <button class="unlock" onclick="checkPassword()">
+        VERIFY ACCESS
+        <span>→</span>
+      </button>
+
+      <div id="passwordMessage"></div>
+
+      <div class="modal-footer">
+        SECURE TERMINAL // ACCESS LOGGED
+      </div>
+
+    </div>
 
   </div>
 
-</div>
 
-<script src="script.js"></script>
+  <script src="script.js"></script>
 
 </body>
 </html>
